@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "mypanelopengl.h"
 #include <QApplication>
 #include <QSurfaceFormat>
 
@@ -11,6 +12,8 @@ int main(int argc, char *argv[]) {
 
   QApplication a(argc, argv);
   MainWindow w;
+  MyPanelOpenGL* blob = w.getGLThing();
+  blob->doSomething();
   w.show();
 
   return a.exec();

@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QMatrix4x4>
 #include <QtOpenGL>
+#include <iostream>
 
 typedef QVector4D point4;
 typedef QVector4D color4;
@@ -29,6 +30,7 @@ protected:
 public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
+  void doSomething();
 
 private:
   /* simple test shapes */
@@ -36,6 +38,7 @@ private:
   cs40::Square *m_square;
 
   int m_polymode;
+  bool m_cull;
 
   bool m_drawSphere;
 
@@ -82,11 +85,15 @@ private:
    * 2 : polygon */
   void updatePolyMode(int val);
 
+  void setCulling(bool cull);
+
   void createShaders(int i, QString vertName, QString fragName);
   void destroyShaders(int i);
 
   void createPBO();
   void destroyPBO();
+
+
 
 signals:
 

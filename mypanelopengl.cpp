@@ -8,7 +8,7 @@ using cs40::Sphere;
 using cs40::Square;
 
 MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
-    : QOpenGLWidget(parent), m_angles(-125., 0., 0.) {
+    : QOpenGLWidget(parent), m_angles(0., 0., 0.) {
 
   for (int i = 0; i < CS40_NUM_PROGS; i++) {
     m_shaderPrograms[i] = NULL;
@@ -17,10 +17,11 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
   }
 
   m_sphere = NULL;
-  m_drawSphere = true;
+  m_drawSphere = false;
   m_polymode = 2;
+  m_cull = true;
   m_curr_prog = 0;
-  m_tex_map = 0;
+  m_tex_map = 1;
   m_pbo = NULL;
   m_pboSize = 1000;
   m_real = -0.8;
@@ -44,6 +45,10 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   destroyPBO();
 }
 
+void MyPanelOpenGL::doSomething(){
+  std::cout << "Welcome to Zombo.com!" << std::endl;
+}
+
 void MyPanelOpenGL::initializeGL() {
   m_wrapper.init(); // Tell CUDA to connect with OpenGL
 
@@ -51,6 +56,7 @@ void MyPanelOpenGL::initializeGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
   updatePolyMode(m_polymode);
+  setCulling(m_cull);
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   createShaders(0, "vshader.glsl", "fshader.glsl");
@@ -129,11 +135,8 @@ void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
     }
     break;
   case Qt::Key_C:
-    if (glIsEnabled(GL_CULL_FACE)) {
-      glDisable(GL_CULL_FACE);
-    } else {
-      glEnable(GL_CULL_FACE);
-    }
+    m_cull=!m_cull;
+    setCulling(m_cull);
     break;
   case Qt::Key_P:
     m_polymode = (m_polymode + 1) % 3;
@@ -217,9 +220,20 @@ void MyPanelOpenGL::updatePolyMode(int val) {
   }
 
   if (mode != GL_NONE) {
+    makeCurrent();
     glPolygonMode(GL_FRONT_AND_BACK, mode);
   }
   // glPolygonMode(GL_BACK,GL_POINT);
+}
+
+void MyPanelOpenGL::setCulling(bool cull){
+  makeCurrent();
+  if (cull){
+    glEnable(GL_CULL_FACE);
+  }
+  else{
+    glDisable(GL_CULL_FACE);
+  }
 }
 
 void MyPanelOpenGL::createShaders(int i, QString vertName, QString fragName) {
