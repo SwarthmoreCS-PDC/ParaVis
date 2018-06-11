@@ -47,12 +47,14 @@ set(UTIL_HEADERS
   timerBase.h timerCPU.h
   texturedQuad.h
   shaderHelpers.h
+  dataVisCUDA.h
   )
 
 set(UTIL_SRC
   timerCPU.cpp
   texturedQuad.cpp
   shaderHelpers.cpp
+  dataVisCUDA.cpp
   )
 
 set(GPU_UTIL_HEADERS
@@ -78,8 +80,9 @@ symlink_data(shaders *.glsl)
 add_subdirectory(common)
 
 cuda_add_library(cudawrapper
-  cudahelpers.h
-  cudahelpers.cu)
+  cudahelpers.h cudaWrapper.h juliaKernel.h
+  cudahelpers.cu cudaWrapper.cu juliaKernel.cu
+  )
 
 #QT headers requiring MOC (meta object compiler)
 set(QTHDRS
