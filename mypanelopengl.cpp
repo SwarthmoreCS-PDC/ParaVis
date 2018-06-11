@@ -17,11 +17,12 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
   }
 
   m_sphere = NULL;
+  m_vis = NULL;
   m_drawSphere = false;
   m_polymode = 2;
   m_cull = true;
   m_curr_prog = 0;
-  m_tex_map = 1;
+  m_tex_map = 0;
   m_pbo = NULL;
   m_pboSize = 1000;
   m_real = -0.8;
@@ -39,10 +40,15 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   m_texture = NULL;
   delete m_texture2;
   m_texture2 = NULL;
+  if(m_vis){
+    m_vis->disconnect();
+    delete m_vis;
+    m_vis = NULL;
+  }
   destroyShaders(0);
   // Cleanup PBO/Texture
-  m_wrapper.disconnect();
-  destroyPBO();
+  //m_wrapper.disconnect();
+  //destroyPBO();
 }
 
 void MyPanelOpenGL::doSomething(){
@@ -50,7 +56,8 @@ void MyPanelOpenGL::doSomething(){
 }
 
 void MyPanelOpenGL::initializeGL() {
-  m_wrapper.init(); // Tell CUDA to connect with OpenGL
+
+  //m_wrapper.init(); // Tell CUDA to connect with OpenGL
 
   // glewInit(); //manually do this now that we aren't using QtOpenGL
   glEnable(GL_DEPTH_TEST);
@@ -63,6 +70,11 @@ void MyPanelOpenGL::initializeGL() {
 
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
   m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
+
+  m_vis = new DataVisCUDA(m_pboSize, m_pboSize);
+  m_vis->init();
+
+
   m_sphere = new Sphere(0.5, 30, 30);
   m_square = new Square(2.);
 
@@ -273,6 +285,8 @@ void MyPanelOpenGL::destroyShaders(int i) {
 }
 
 void MyPanelOpenGL::createPBO() {
+  //m_vis->createPBO();  //done as part of init
+  /*
   destroyPBO(); // get rid of any old buffer
 
   // Create PBO
@@ -283,6 +297,7 @@ void MyPanelOpenGL::createPBO() {
   m_pbo->bind();
   m_pbo->allocate(numBytes);
   m_wrapper.connect(m_pbo->bufferId()); // Inform CUDA about PBO
+  */
 
   // Create ID, allocate space for Texture
   m_texture2->create();
@@ -290,7 +305,7 @@ void MyPanelOpenGL::createPBO() {
 
   // Allocate the texture memory. The last parameter is NULL since we only
   // want to allocate memory, not initialize it
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_pboSize, m_pboSize, 0, GL_RGBA,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_pboSize, m_pboSize, 0, GL_RGB,
                GL_UNSIGNED_BYTE, NULL);
 
   // int err = glGetError();
@@ -308,18 +323,23 @@ void MyPanelOpenGL::createPBO() {
 
 void MyPanelOpenGL::textureReload() {
   // Run CUDA kernel to populate PBO
-  m_wrapper.run(m_real, m_imaginary);
+  m_vis->update(m_real, m_imaginary);
+  //m_wrapper.run(m_real, m_imaginary);
   // Read Texture data from PBO
-  glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
+  //glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
   m_texture2->bind();
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
-                  GL_UNSIGNED_BYTE, NULL);
+  m_vis->textureReload();
+//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
+  //                GL_UNSIGNED_BYTE, NULL);
 }
 
 void MyPanelOpenGL::destroyPBO() {
+  //m_vis->destroyPBO();
+  /*
   if (m_pbo) {
     m_pbo->release();
     delete m_pbo;
     m_pbo = NULL;
   }
+  */
 }

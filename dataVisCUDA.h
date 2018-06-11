@@ -1,24 +1,18 @@
 #pragma once
 
-#include <QtOpenGL>
+#include <QOpenGLBuffer>
+#include <QOpenGLFunctions_4_1_Core>
 #include "cudaWrapper.h"
 
-class DataVisCUDA {
+class DataVisCUDA : protected QOpenGLFunctions_4_1_Core {
 
 public:
   DataVisCUDA(int w, int h);
-  ~DataVisCUDA(){};
+  virtual ~DataVisCUDA(){};
 
-  virtual void update();
+  virtual void update(float re, float im);
 
-private:
-  int m_width, m_height;
-  QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
-  CUDAWrapper m_wrapper;
-
-  void createPBO();
-  void destroyPBO();
-    /* Call CUDA initializization during OpenGL init */
+  /* Call CUDA initializization during OpenGL init */
   void init();
 
   /* Connect Pixel Buffer Object with buffID to
@@ -27,6 +21,17 @@ private:
 
   /* Release CUDA resource connected to Pixel Buffer*/
   void disconnect();
+
+  void textureReload();
+
+private:
+  int m_width, m_height;
+  QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
+  CUDAWrapper m_wrapper;
+
+  void createPBO();
+  void destroyPBO();
+
 
 
 };

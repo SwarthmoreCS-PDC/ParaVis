@@ -1,10 +1,16 @@
 #include "dataVisCUDA.h"
 #include "juliaKernel.h"
+#include <iostream>
+
 
 DataVisCUDA::DataVisCUDA(int w, int h) :
    m_width(w), m_height(h), m_pbo(NULL) { };
 
-void DataVisCUDA::init() { m_wrapper.init(); }
+void DataVisCUDA::init() {
+  initializeOpenGLFunctions();
+  m_wrapper.init();
+  createPBO();
+}
 
 void DataVisCUDA::connect() {
   if(!m_pbo){
@@ -15,18 +21,28 @@ void DataVisCUDA::connect() {
 
 void DataVisCUDA::disconnect() {
   m_wrapper.disconnect();
+  destroyPBO();
 }
 
-void DataVisCUDA::update(){
+void DataVisCUDA::update(float re, float im){
+  void* buf = m_wrapper.map();
   JuliaKernel kern(m_width,m_height);
-  kern.run(m_wrapper.map(), -0.8, 0.156);
+  kern.run(buf, re, im);
+  m_wrapper.unmap();
+}
+
+void DataVisCUDA::textureReload() {
+  // Read Texture data from PBO
+  glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB,
+                  GL_UNSIGNED_BYTE, NULL);
 }
 
 void DataVisCUDA::createPBO(){
   destroyPBO(); // get rid of any old buffer
 
   // Create PBO
-  int numBytes = sizeof(GLubyte) * 4 * m_width* m_height;
+  int numBytes = sizeof(GLubyte) * 3 * m_width* m_height;
   m_pbo = new QOpenGLBuffer(
       QOpenGLBuffer::PixelUnpackBuffer); // Used for reading Texture data
   m_pbo->create();

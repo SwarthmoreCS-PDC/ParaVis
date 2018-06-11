@@ -2,11 +2,12 @@
 
 /* Needed to get some OpenGL function
  * names through QT5. Oh, QT5. */
-#define GL_GLEXT_PROTOTYPES
+//#define GL_GLEXT_PROTOTYPES
 
 #include "common/sphere.h"
 #include "common/square.h"
 #include "cudahelpers.h"
+#include "dataVisCUDA.h"
 #include <QKeyEvent>
 #include <QMatrix4x4>
 #include <QtOpenGL>
@@ -49,6 +50,8 @@ private:
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
   int m_pboSize;
   MyCUDAWrapper m_wrapper;
+  DataVisCUDA* m_vis;
+
 
   float m_real, m_imaginary;
 
