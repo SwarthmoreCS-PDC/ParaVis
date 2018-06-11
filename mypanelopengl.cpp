@@ -64,7 +64,7 @@ void MyPanelOpenGL::initializeGL() {
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
   m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
   m_sphere = new Sphere(0.5, 30, 30);
-  m_square = new Square(1.);
+  m_square = new Square(2.);
 
   m_shaderPrograms[m_curr_prog]->bind();
 
