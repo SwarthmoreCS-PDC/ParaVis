@@ -13,7 +13,6 @@ void JuliaKernel::run(void* buff, float re, float im) {
   re += 0.3 * cos(m_ticks/17.);
   kernel<<<grid, 1>>>((uchar3*)buff, m_width, m_height, re, im);
   m_ticks = (m_ticks+1)%1234;
-  std::cout << re << " " << im << " " << m_ticks << std::endl;
 }
 
 struct cuComplex {

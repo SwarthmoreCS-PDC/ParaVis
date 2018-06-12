@@ -6,11 +6,9 @@ set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules) #for FindGLEW.cmake
 
 
 FIND_PACKAGE(OpenGL REQUIRED) #for graphics
-FIND_PACKAGE(GLEW REQUIRED) #for graphics
 
 #required CMake options for QT Apps
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-find_package(GLUT REQUIRED)
 find_package(Threads REQUIRED)
 
 #for CUDA
@@ -45,43 +43,37 @@ include_directories(
 
 set(UTIL_HEADERS
   timerBase.h timerCPU.h
-  texturedQuad.h
-  shaderHelpers.h
   dataVisCUDA.h
   )
 
 set(UTIL_SRC
   timerCPU.cpp
-  texturedQuad.cpp
-  shaderHelpers.cpp
   dataVisCUDA.cpp
   )
 
 set(GPU_UTIL_HEADERS
   handle_cuda_error.h
   timerBase.h timerGPU.h
-  gpuDisplayData.h
   )
 
 set(GPU_UTIL_SRC
   handle_cuda_error.cu
   timerGPU.cu
-  gpuDisplayData.cu
   )
 
 add_library(myutil ${UTIL_HEADERS} ${UTIL_SRC})
 cuda_add_library(mycudautil ${GPU_UTIL_HEADERS} ${GPU_UTIL_SRC})
 
 set(MYLIBS mycudautil myutil)
-set(GLLIBS ${GLUT_LIBRARY} ${OPENGL_LIBRARY} ${GLEW_LIBRARY})
+set(GLLIBS ${OPENGL_LIBRARY})
 
 symlink_data(shaders *.glsl)
 
 add_subdirectory(common)
 
 cuda_add_library(cudawrapper
-  cudahelpers.h cudaWrapper.h juliaKernel.h
-  cudahelpers.cu cudaWrapper.cu juliaKernel.cu
+  cudaWrapper.h juliaKernel.h
+  cudaWrapper.cu juliaKernel.cu
   )
 
 #QT headers requiring MOC (meta object compiler)

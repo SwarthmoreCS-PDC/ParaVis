@@ -7,7 +7,6 @@
 
 #include "common/sphere.h"
 #include "common/square.h"
-#include "cudahelpers.h"
 #include "dataVisCUDA.h"
 #include <QKeyEvent>
 #include <QMatrix4x4>
@@ -54,7 +53,7 @@ private:
 
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
   int m_pboSize;
-  MyCUDAWrapper m_wrapper;
+  //MyCUDAWrapper m_wrapper;
   DataVisCUDA* m_vis;
 
 
