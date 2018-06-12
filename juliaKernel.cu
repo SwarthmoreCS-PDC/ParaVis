@@ -5,13 +5,14 @@
 __device__ int julia(int x, int y, int w, int h, float re, float im);
 __global__ void kernel(uchar3 *ptr, int w, int h, float re, float im);
 
+void JuliaKernel::update(void* buff, int w, int h) {
 
-void JuliaKernel::run(void* buff, float re, float im) {
-
-  dim3 grid(m_width, m_height);
+  dim3 grid(w, h);
+  float im = m_im;
+  float re = m_re;
   im += 0.2 * sin(m_ticks/20.);
   re += 0.3 * cos(m_ticks/17.);
-  kernel<<<grid, 1>>>((uchar3*)buff, m_width, m_height, re, im);
+  kernel<<<grid, 1>>>((uchar3*)buff, w, h, re, im);
   m_ticks = (m_ticks+1)%1234;
 }
 

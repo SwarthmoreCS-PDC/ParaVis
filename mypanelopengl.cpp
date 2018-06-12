@@ -24,7 +24,7 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
   m_polymode = 2;
   m_cull = true;
   m_curr_prog = 0;
-  m_tex_map = 0;
+  m_tex_map = 1;
   m_pbo = NULL;
   m_pboSize = 1000;
   m_real = -0.8;
@@ -50,13 +50,6 @@ MyPanelOpenGL::~MyPanelOpenGL() {
     m_vis = NULL;
   }
   destroyShaders(0);
-  // Cleanup PBO/Texture
-  //m_wrapper.disconnect();
-  //destroyPBO();
-}
-
-void MyPanelOpenGL::doSomething(){
-  std::cout << "Welcome to Zombo.com!" << std::endl;
 }
 
 void MyPanelOpenGL::setVisulization(DataVisCUDA* vis){
@@ -270,7 +263,7 @@ void MyPanelOpenGL::setCulling(bool cull){
 
 void MyPanelOpenGL::createShaders(int i, QString vertName, QString fragName) {
 
-  cout << "building shader " << i << endl;
+  //cout << "building shader " << i << endl;
   destroyShaders(i); // get rid of any old shaders
   m_vertexShaders[i] = new QOpenGLShader(QOpenGLShader::Vertex);
   if (!m_vertexShaders[i]->compileSourceFile(vertName)) {
@@ -305,19 +298,7 @@ void MyPanelOpenGL::destroyShaders(int i) {
 }
 
 void MyPanelOpenGL::createPBO() {
-  //m_vis->createPBO();  //done as part of init
-  /*
-  destroyPBO(); // get rid of any old buffer
 
-  // Create PBO
-  int numBytes = sizeof(GLubyte) * 4 * m_pboSize * m_pboSize;
-  m_pbo = new QOpenGLBuffer(
-      QOpenGLBuffer::PixelUnpackBuffer); // Used for reading Texture data
-  m_pbo->create();
-  m_pbo->bind();
-  m_pbo->allocate(numBytes);
-  m_wrapper.connect(m_pbo->bufferId()); // Inform CUDA about PBO
-  */
 
   // Create ID, allocate space for Texture
   m_texture2->create();
@@ -327,9 +308,6 @@ void MyPanelOpenGL::createPBO() {
   // want to allocate memory, not initialize it
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_pboSize, m_pboSize, 0, GL_RGB,
                GL_UNSIGNED_BYTE, NULL);
-
-  // int err = glGetError();
-  // cout << err << " " << glewGetErrorString(glGetError()) << endl;
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -348,7 +326,7 @@ void MyPanelOpenGL::textureReload() {
     m_vis->init();
   }
 
-  m_vis->update(m_real, m_imaginary);
+  m_vis->update();
   //m_wrapper.run(m_real, m_imaginary);
   // Read Texture data from PBO
   //glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
@@ -357,15 +335,4 @@ void MyPanelOpenGL::textureReload() {
 //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
   //                GL_UNSIGNED_BYTE, NULL);
   }
-}
-
-void MyPanelOpenGL::destroyPBO() {
-  //m_vis->destroyPBO();
-  /*
-  if (m_pbo) {
-    m_pbo->release();
-    delete m_pbo;
-    m_pbo = NULL;
-  }
-  */
 }

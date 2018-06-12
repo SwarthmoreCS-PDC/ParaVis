@@ -1,18 +1,21 @@
 #pragma once
 
+#include "animator.h"
 #include <cuda.h>
 
 /* Julia Kernel stuff */
-class JuliaKernel {
+class JuliaKernel: public Animator {
 
 public:
-  JuliaKernel(int w, int h):
-    m_width(w), m_height(h), m_ticks(0){ };
+  JuliaKernel(float re, float im):
+    m_re(re), m_im(im), m_ticks(0){ };
   ~JuliaKernel(){};
+
+  void update(void* buff, int w, int h);
 
   void run(void* buff, float re, float im);
 
 private:
-  int m_width, m_height;
+  float m_re, m_im;
   int m_ticks;
 };

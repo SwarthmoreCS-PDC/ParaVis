@@ -31,7 +31,6 @@ protected:
 public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
-  void doSomething();
   void setVisulization(DataVisCUDA* vis);
 
 private:
@@ -100,7 +99,6 @@ private:
   void destroyShaders(int i);
 
   void createPBO();
-  void destroyPBO();
 
 
 

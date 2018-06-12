@@ -4,12 +4,22 @@
 
 
 DataVisCUDA::DataVisCUDA(int w, int h) :
-   m_width(w), m_height(h), m_ready(false), m_pbo(NULL) { };
+   m_width(w), m_height(h), m_ready(false), m_pbo(NULL),
+   m_animate(NULL) { };
 
 void DataVisCUDA::init() {
   m_wrapper.init();
   createPBO();
   m_ready = true;
+}
+
+void DataVisCUDA::update(){
+  void* buff = m_wrapper.map();
+  //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
+  if(m_animate){
+    m_animate->update(buff, m_width, m_height);
+  }
+  m_wrapper.unmap();
 }
 
 void DataVisCUDA::connect() {
@@ -22,13 +32,6 @@ void DataVisCUDA::connect() {
 void DataVisCUDA::disconnect() {
   m_wrapper.disconnect();
   destroyPBO();
-}
-
-void DataVisCUDA::update(float re, float im){
-  void* buf = m_wrapper.map();
-  static JuliaKernel kern(m_width,m_height);
-  kern.run(buf, re, im);
-  m_wrapper.unmap();
 }
 
 void DataVisCUDA::textureReload() {

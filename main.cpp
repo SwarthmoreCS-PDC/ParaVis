@@ -1,5 +1,6 @@
 #include "qtViewer.h"
 #include "dataVisCUDA.h"
+#include "juliaKernel.h"
 #include <iostream>
 
 
@@ -9,7 +10,12 @@ int main(int argc, char *argv[]) {
 
   /* TODO: generalize this class */
   DataVisCUDA* vis = new DataVisCUDA(1000,1000);
+  Animator* kern = new JuliaKernel(-0.8,0.156);
+
+  vis->setAnimator(kern);
   viewer.setAnimation(vis);
 
-  return viewer.run();
+  int res = viewer.run();
+  delete kern; kern=nullptr;
+  return res;
 }

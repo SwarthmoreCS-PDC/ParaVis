@@ -5,7 +5,10 @@
 
 CUDAWrapper::CUDAWrapper() : m_pbo_CUDA(NULL){};
 
-void CUDAWrapper::init() { cudaGLSetGLDevice(0); }
+void CUDAWrapper::init() {
+   /* deprecated as of CUDA 5.0 */
+   //cudaGLSetGLDevice(0);
+}
 
 void CUDAWrapper::connect(GLuint buffID) {
   if (m_pbo_CUDA) {
