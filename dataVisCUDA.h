@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions_4_1_Core>
+#include "qoglHelper.h"
 #include "cudaWrapper.h"
 
-class DataVisCUDA : protected QOpenGLFunctions_4_1_Core {
+class DataVisCUDA : protected QOGLHelper {
 
 public:
   DataVisCUDA(int w, int h);
@@ -24,8 +24,11 @@ public:
 
   void textureReload();
 
+  inline bool isReady(){ return m_ready; }
+
 private:
   int m_width, m_height;
+  bool m_ready;
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
   CUDAWrapper m_wrapper;
 

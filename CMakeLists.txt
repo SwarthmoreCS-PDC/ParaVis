@@ -103,6 +103,12 @@ set(SRC
   main.cpp
   mainwindow.cpp
   mypanelopengl.cpp
+  qtViewer.cpp
+)
+
+set(SHDRS
+  qtViewer.h
+  qoglHelper.h
 )
 
 ADD_EXECUTABLE(interop ${SRC} ${SHDRS} ${MYQTFILES})

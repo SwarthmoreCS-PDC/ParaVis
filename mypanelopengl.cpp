@@ -18,6 +18,8 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
 
   m_sphere = NULL;
   m_vis = NULL;
+  m_timer = NULL;
+  m_paused = false;
   m_drawSphere = false;
   m_polymode = 2;
   m_cull = true;
@@ -40,6 +42,8 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   m_texture = NULL;
   delete m_texture2;
   m_texture2 = NULL;
+  delete m_timer;
+  m_timer = NULL;
   if(m_vis){
     m_vis->disconnect();
     delete m_vis;
@@ -53,6 +57,11 @@ MyPanelOpenGL::~MyPanelOpenGL() {
 
 void MyPanelOpenGL::doSomething(){
   std::cout << "Welcome to Zombo.com!" << std::endl;
+}
+
+void MyPanelOpenGL::setVisulization(DataVisCUDA* vis){
+  m_vis = vis;
+  textureReload();
 }
 
 void MyPanelOpenGL::initializeGL() {
@@ -71,10 +80,6 @@ void MyPanelOpenGL::initializeGL() {
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
   m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
 
-  m_vis = new DataVisCUDA(m_pboSize, m_pboSize);
-  m_vis->init();
-
-
   m_sphere = new Sphere(0.5, 30, 30);
   m_square = new Square(2.);
 
@@ -85,6 +90,18 @@ void MyPanelOpenGL::initializeGL() {
   updateModel();
 
   createPBO(); // Setup Pixel Buffer on GPU
+
+  m_timer = new QTimer(this);
+  connect(m_timer, SIGNAL(timeout()), this, SLOT(step()));
+  m_timer->start(10);
+
+}
+
+void MyPanelOpenGL::step(){
+  if(!m_paused){
+    textureReload();
+    update();
+  }
 }
 
 void MyPanelOpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
@@ -125,6 +142,9 @@ void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
   qreal step = 1;
   /*Enable strong Focus on GL Widget to process key events*/
   switch (event->key()) {
+  case Qt::Key_Space:
+     m_paused=!m_paused;
+     break;
   case Qt::Key_X:
     if (event->text() == "x") {
       updateAngles(0, step);
@@ -323,6 +343,11 @@ void MyPanelOpenGL::createPBO() {
 
 void MyPanelOpenGL::textureReload() {
   // Run CUDA kernel to populate PBO
+  if(m_vis){
+  if(!m_vis->isReady()){
+    m_vis->init();
+  }
+
   m_vis->update(m_real, m_imaginary);
   //m_wrapper.run(m_real, m_imaginary);
   // Read Texture data from PBO
@@ -331,6 +356,7 @@ void MyPanelOpenGL::textureReload() {
   m_vis->textureReload();
 //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
   //                GL_UNSIGNED_BYTE, NULL);
+  }
 }
 
 void MyPanelOpenGL::destroyPBO() {

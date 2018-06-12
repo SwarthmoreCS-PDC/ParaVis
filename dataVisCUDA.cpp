@@ -4,12 +4,12 @@
 
 
 DataVisCUDA::DataVisCUDA(int w, int h) :
-   m_width(w), m_height(h), m_pbo(NULL) { };
+   m_width(w), m_height(h), m_ready(false), m_pbo(NULL) { };
 
 void DataVisCUDA::init() {
-  initializeOpenGLFunctions();
   m_wrapper.init();
   createPBO();
+  m_ready = true;
 }
 
 void DataVisCUDA::connect() {
@@ -26,7 +26,7 @@ void DataVisCUDA::disconnect() {
 
 void DataVisCUDA::update(float re, float im){
   void* buf = m_wrapper.map();
-  JuliaKernel kern(m_width,m_height);
+  static JuliaKernel kern(m_width,m_height);
   kern.run(buf, re, im);
   m_wrapper.unmap();
 }

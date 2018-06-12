@@ -1,7 +1,8 @@
 #pragma once
 
 /* Needed to get some OpenGL function
- * names through QT5. Oh, QT5. */
+ * names through QT5. Oh, QT5. TODO:
+ * is this needed anymore? On OSX maybe? */
 //#define GL_GLEXT_PROTOTYPES
 
 #include "common/sphere.h"
@@ -11,7 +12,7 @@
 #include <QKeyEvent>
 #include <QMatrix4x4>
 #include <QtOpenGL>
-#include <iostream>
+#include <QTimer>
 
 typedef QVector4D point4;
 typedef QVector4D color4;
@@ -32,6 +33,7 @@ public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
   void doSomething();
+  void setVisulization(DataVisCUDA* vis);
 
 private:
   /* simple test shapes */
@@ -43,8 +45,11 @@ private:
 
   bool m_drawSphere;
 
+  bool m_paused;
+
   QOpenGLTexture *m_texture;
   QOpenGLTexture *m_texture2;
+  QTimer* m_timer;
   int m_tex_map;
 
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
@@ -79,6 +84,8 @@ private:
   /* update model matrix based on angle */
   void updateModel();
 
+
+
   /* wrap a angle value to the range 0..360*/
   qreal wrap(qreal amt);
 
@@ -101,4 +108,6 @@ private:
 signals:
 
 public slots:
+
+  void step();
 };

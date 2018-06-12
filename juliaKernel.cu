@@ -1,4 +1,5 @@
 #include <cuda.h>
+#include <iostream>
 #include "juliaKernel.h"
 
 __device__ int julia(int x, int y, int w, int h, float re, float im);
@@ -8,7 +9,11 @@ __global__ void kernel(uchar3 *ptr, int w, int h, float re, float im);
 void JuliaKernel::run(void* buff, float re, float im) {
 
   dim3 grid(m_width, m_height);
+  im += 0.2 * sin(m_ticks/20.);
+  re += 0.3 * cos(m_ticks/17.);
   kernel<<<grid, 1>>>((uchar3*)buff, m_width, m_height, re, im);
+  m_ticks = (m_ticks+1)%1234;
+  std::cout << re << " " << im << " " << m_ticks << std::endl;
 }
 
 struct cuComplex {
