@@ -56,9 +56,9 @@ void DataVisCUDA::textureReload() {
   update();
   m_texture->bind();
   // Read Texture data from PBO
-  glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB,
-                  GL_UNSIGNED_BYTE, nullptr);
+  m_pbo->bind();
+  m_texture->setData(QOpenGLTexture::RGB, QOpenGLTexture::UInt8, (const void *) nullptr);
+  m_pbo->release();
 }
 
 void DataVisCUDA::createPBO(){
@@ -72,24 +72,24 @@ void DataVisCUDA::createPBO(){
   m_pbo->bind();
   m_pbo->allocate(numBytes);
   m_wrapper.connect(m_pbo->bufferId()); // Inform CUDA about PBO
+  m_pbo->release();
 
   //Create Texture
   m_texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
   // Create ID, allocate space for Texture
   m_texture->create();
   m_texture->bind();
-
+  m_texture->setSize(m_width, m_height);
+  m_texture->setFormat(QOpenGLTexture::RGB8_UNorm);
+  m_texture->allocateStorage();
   // Allocate the texture memory. The last parameter is nullptr since we only
   // want to allocate memory, not initialize it
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, nullptr);
+  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB,
+  //             GL_UNSIGNED_BYTE, nullptr);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  // These last two are critical for textures whose dimension are not a power of
-  // 2
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  QOpenGLTexture::Filter filt = QOpenGLTexture::Linear;
+  m_texture->setMinMagFilters(filt, filt);
+  m_texture->setWrapMode(QOpenGLTexture::ClampToEdge);
 }
 
 void DataVisCUDA::destroyPBO(){

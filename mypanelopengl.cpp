@@ -50,9 +50,7 @@ void MyPanelOpenGL::setVisulization(DataVisCUDA* vis){
 
 void MyPanelOpenGL::initializeGL() {
 
-  //m_wrapper.init(); // Tell CUDA to connect with OpenGL
 
-  // glewInit(); //manually do this now that we aren't using QtOpenGL
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
   updatePolyMode(m_polymode);
@@ -60,9 +58,7 @@ void MyPanelOpenGL::initializeGL() {
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   createShaders(0, "vshader.glsl", "fshader.glsl");
-
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
-  //m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
 
   m_sphere = new Sphere(0.5, 30, 30);
   m_square = new Square(2.);
@@ -76,7 +72,6 @@ void MyPanelOpenGL::initializeGL() {
   m_timer = new QTimer(this);
   connect(m_timer, SIGNAL(timeout()), this, SLOT(step()));
   m_timer->start(10);
-
 }
 
 void MyPanelOpenGL::step(){
@@ -177,7 +172,6 @@ void MyPanelOpenGL::setTexture() {
     m_texture->bind();
   } else if (m_tex_map == 1 && m_vis) {
     m_vis->bind();
-    //m_texture2->bind();
   }
 }
 

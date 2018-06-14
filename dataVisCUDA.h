@@ -2,12 +2,12 @@
 
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
-#include "qoglHelper.h"
+//#include "qoglHelper.h"
 #include "cudaWrapper.h"
 #include "animator.h"
 #include "imageBuffer.h"
 
-class DataVisCUDA : protected QOGLHelper {
+class DataVisCUDA {
 
 public:
   // Depth d currently not used
