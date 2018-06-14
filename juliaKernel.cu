@@ -5,14 +5,17 @@
 __device__ int julia(int x, int y, int w, int h, float re, float im);
 __global__ void kernel(color3 *ptr, int w, int h, float re, float im);
 
-void JuliaKernel::update(color3* buff, int w, int h) {
+void JuliaKernel::update(ImageBuffer* img) {
 
+  int w, h;
+  w = img->width;
+  h = img->height;
   dim3 grid(w, h);
   float im = m_im;
   float re = m_re;
   im += 0.2 * sin(m_ticks/20.);
   re += 0.3 * cos(m_ticks/17.);
-  kernel<<<grid, 1>>>(buff, w, h, re, im);
+  kernel<<<grid, 1>>>(img->buffer, w, h, re, im);
   m_ticks = (m_ticks+1)%1234;
 }
 

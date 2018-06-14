@@ -102,6 +102,7 @@ set(SHDRS
   qtViewer.h
   qoglHelper.h
   color3.h
+  imageBuffer.h
 )
 
 ADD_EXECUTABLE(interop ${SRC} ${SHDRS} ${MYQTFILES})

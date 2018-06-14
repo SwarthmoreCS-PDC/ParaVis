@@ -6,7 +6,7 @@ __global__ void int_to_color(color3 *optr, const int *my_cuda_data, int ncols);
 __global__ void simplekernel(int *data, int ncols);
 
 UserBufferKernel::UserBufferKernel(int w, int h):
-  m_dev_grid(NULL),
+  m_dev_grid(nullptr),
   m_rows(h), m_cols(w) {
 
   int* cpu_data = new int[m_rows*m_cols];
@@ -32,7 +32,7 @@ UserBufferKernel::~UserBufferKernel(){
   m_dev_grid = nullptr;
 }
 
-void UserBufferKernel::update(color3* buff, int w, int h){
+void UserBufferKernel::update(ImageBuffer* img){
 
   dim3 blocks(m_cols / 8, m_rows / 8, 1);
   dim3 threads_block(8, 8, 1);
@@ -43,7 +43,7 @@ void UserBufferKernel::update(color3* buff, int w, int h){
     simplekernel<<<blocks, threads_block>>>(m_dev_grid, m_cols);
   }
 
-  int_to_color<<<blocks, threads_block>>>(buff, m_dev_grid,
+  int_to_color<<<blocks, threads_block>>>(img->buffer, m_dev_grid,
                                           m_cols);
 
   // I needed to slow it down:

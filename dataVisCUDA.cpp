@@ -3,9 +3,16 @@
 #include <iostream>
 
 
-DataVisCUDA::DataVisCUDA(int w, int h) :
-   m_width(w), m_height(h), m_ready(false), m_pbo(NULL),
-   m_animate(NULL) { };
+DataVisCUDA::DataVisCUDA(int w, int h, int d) :
+   m_width(w), m_height(h), m_depth(d),
+   m_ready(false), m_pbo(nullptr),
+   m_animate(nullptr) {
+
+     m_image.height=h;
+     m_image.width=w;
+     m_image.depth=d;
+     m_image.buffer=nullptr;
+};
 
 void DataVisCUDA::init() {
   m_wrapper.init();
@@ -15,9 +22,10 @@ void DataVisCUDA::init() {
 
 void DataVisCUDA::update(){
   color3* buff = m_wrapper.map();
+  m_image.buffer=buff;
   //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
   if(m_animate){
-    m_animate->update(buff, m_width, m_height);
+    m_animate->update(&m_image);
   }
   m_wrapper.unmap();
 }

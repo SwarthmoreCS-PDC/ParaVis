@@ -1,7 +1,6 @@
 #pragma once
 
 #include "animator.h"
-#include "color3.h"
 #include <cuda.h>
 
 /* UserBuffer Kernel stuff */
@@ -11,7 +10,7 @@ public:
   UserBufferKernel(int w, int h);
   ~UserBufferKernel();
 
-  void update(color3* buff, int w, int h);
+  void update(ImageBuffer* img);
 
 private:
   int* m_dev_grid;

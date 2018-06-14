@@ -4,11 +4,13 @@
 #include "qoglHelper.h"
 #include "cudaWrapper.h"
 #include "animator.h"
+#include "imageBuffer.h"
 
 class DataVisCUDA : protected QOGLHelper {
 
 public:
-  DataVisCUDA(int w, int h);
+  // Depth d currently not used
+  DataVisCUDA(int w, int h, int d=1);
   virtual ~DataVisCUDA(){};
 
   virtual void update();
@@ -32,11 +34,12 @@ public:
   }
 
 private:
-  int m_width, m_height;
+  int m_width, m_height, m_depth;
   bool m_ready;
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
   CUDAWrapper m_wrapper;
   Animator* m_animate;
+  ImageBuffer m_image;
   void createPBO();
   void destroyPBO();
 
