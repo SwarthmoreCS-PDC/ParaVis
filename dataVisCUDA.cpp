@@ -5,14 +5,19 @@
 
 DataVisCUDA::DataVisCUDA(int w, int h, int d) :
    m_width(w), m_height(h), m_depth(d),
-   m_ready(false), m_pbo(nullptr),
-   m_animate(nullptr) {
+   m_ready(false), m_texture(nullptr),
+   m_pbo(nullptr), m_animate(nullptr) {
 
      m_image.height=h;
      m_image.width=w;
      m_image.depth=d;
      m_image.buffer=nullptr;
 };
+
+DataVisCUDA::~DataVisCUDA(){
+    disconnect();
+    delete m_texture; m_texture=nullptr;
+}
 
 void DataVisCUDA::init() {
   m_wrapper.init();
@@ -21,6 +26,7 @@ void DataVisCUDA::init() {
 }
 
 void DataVisCUDA::update(){
+  if(!isReady()){ init(); }
   color3* buff = m_wrapper.map();
   m_image.buffer=buff;
   //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
@@ -28,6 +34,10 @@ void DataVisCUDA::update(){
     m_animate->update(&m_image);
   }
   m_wrapper.unmap();
+}
+
+void DataVisCUDA::bind(){
+  m_texture->bind();
 }
 
 void DataVisCUDA::connect() {
@@ -43,6 +53,8 @@ void DataVisCUDA::disconnect() {
 }
 
 void DataVisCUDA::textureReload() {
+  update();
+  m_texture->bind();
   // Read Texture data from PBO
   glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB,
@@ -60,6 +72,24 @@ void DataVisCUDA::createPBO(){
   m_pbo->bind();
   m_pbo->allocate(numBytes);
   m_wrapper.connect(m_pbo->bufferId()); // Inform CUDA about PBO
+
+  //Create Texture
+  m_texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
+  // Create ID, allocate space for Texture
+  m_texture->create();
+  m_texture->bind();
+
+  // Allocate the texture memory. The last parameter is nullptr since we only
+  // want to allocate memory, not initialize it
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB,
+               GL_UNSIGNED_BYTE, nullptr);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  // These last two are critical for textures whose dimension are not a power of
+  // 2
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void DataVisCUDA::destroyPBO(){

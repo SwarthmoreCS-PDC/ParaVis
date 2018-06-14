@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QOpenGLBuffer>
+#include <QOpenGLTexture>
 #include "qoglHelper.h"
 #include "cudaWrapper.h"
 #include "animator.h"
@@ -11,9 +12,31 @@ class DataVisCUDA : protected QOGLHelper {
 public:
   // Depth d currently not used
   DataVisCUDA(int w, int h, int d=1);
-  virtual ~DataVisCUDA(){};
+  virtual ~DataVisCUDA();
 
   virtual void update();
+
+  void bind();
+  void textureReload();
+
+  inline void setAnimator( Animator* animate){
+    m_animate = animate;
+  }
+
+protected:
+  int m_width, m_height, m_depth;
+  bool m_ready;
+  QOpenGLTexture *m_texture;
+  ImageBuffer m_image;
+
+private:
+  QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
+  CUDAWrapper m_wrapper;
+  Animator* m_animate;
+  void createPBO();
+  void destroyPBO();
+  inline bool isReady(){ return m_ready; }
+
 
   /* Call CUDA initializization during OpenGL init */
   void init();
@@ -24,25 +47,5 @@ public:
 
   /* Release CUDA resource connected to Pixel Buffer*/
   void disconnect();
-
-  void textureReload();
-
-  inline bool isReady(){ return m_ready; }
-
-  inline void setAnimator( Animator* animate){
-    m_animate = animate;
-  }
-
-private:
-  int m_width, m_height, m_depth;
-  bool m_ready;
-  QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
-  CUDAWrapper m_wrapper;
-  Animator* m_animate;
-  ImageBuffer m_image;
-  void createPBO();
-  void destroyPBO();
-
-
 
 };

@@ -46,17 +46,10 @@ private:
   bool m_paused;
 
   QOpenGLTexture *m_texture;
-  QOpenGLTexture *m_texture2;
   QTimer* m_timer;
   int m_tex_map;
 
-  QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */
-  int m_pboSize;
-  //MyCUDAWrapper m_wrapper;
   DataVisCUDA* m_vis;
-
-
-  float m_real, m_imaginary;
 
   vec3 m_angles; /* Euler angles for rotation */
 

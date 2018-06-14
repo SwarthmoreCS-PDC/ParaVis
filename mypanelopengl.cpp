@@ -25,11 +25,7 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
   m_cull = true;
   m_curr_prog = 0;
   m_tex_map = 1;
-  m_pbo = nullptr;
-  m_pboSize = 1000;
-  m_real = -0.8;
-  m_imaginary = 0.156;
-  m_texture = m_texture2 = nullptr;
+  m_texture = nullptr;
 }
 
 MyPanelOpenGL::~MyPanelOpenGL() {
@@ -40,15 +36,10 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   m_square = nullptr;
   delete m_texture;
   m_texture = nullptr;
-  delete m_texture2;
-  m_texture2 = nullptr;
   delete m_timer;
   m_timer = nullptr;
-  if(m_vis){
-    m_vis->disconnect();
-    delete m_vis;
-    m_vis = nullptr;
-  }
+  delete m_vis;
+  m_vis = nullptr;
   destroyShaders(0);
 }
 
@@ -71,7 +62,7 @@ void MyPanelOpenGL::initializeGL() {
   createShaders(0, "vshader.glsl", "fshader.glsl");
 
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
-  m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
+  //m_texture2 = new QOpenGLTexture(QOpenGLTexture::Target2D);
 
   m_sphere = new Sphere(0.5, 30, 30);
   m_square = new Square(2.);
@@ -81,8 +72,6 @@ void MyPanelOpenGL::initializeGL() {
   m_projection.perspective(40, 1, 1, 8);
   m_camera.lookAt(vec3(0, 0, 3), vec3(0, 0, 0), vec3(0, 1., 0.));
   updateModel();
-
-  createPBO(); // Setup Pixel Buffer on GPU
 
   m_timer = new QTimer(this);
   connect(m_timer, SIGNAL(timeout()), this, SLOT(step()));
@@ -177,22 +166,6 @@ void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
   case Qt::Key_V:
     m_curr_prog = (m_curr_prog + 1) % CS40_NUM_PROGS;
     break;
-  case Qt::Key_R:
-    if (event->text() == "r") {
-      m_real += 0.01;
-    } else {
-      m_real -= 0.01;
-    }
-    textureReload();
-    break;
-  case Qt::Key_I:
-    if (event->text() == "i") {
-      m_imaginary += 0.01;
-    } else {
-      m_imaginary -= 0.01;
-    }
-    textureReload();
-    break;
   default:
     QWidget::keyPressEvent(event); /* pass to base class */
   }
@@ -202,8 +175,9 @@ void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
 void MyPanelOpenGL::setTexture() {
   if (m_tex_map == 0) {
     m_texture->bind();
-  } else if (m_tex_map == 1) {
-    m_texture2->bind();
+  } else if (m_tex_map == 1 && m_vis) {
+    m_vis->bind();
+    //m_texture2->bind();
   }
 }
 
@@ -297,42 +271,8 @@ void MyPanelOpenGL::destroyShaders(int i) {
   }
 }
 
-void MyPanelOpenGL::createPBO() {
-
-
-  // Create ID, allocate space for Texture
-  m_texture2->create();
-  m_texture2->bind();
-
-  // Allocate the texture memory. The last parameter is nullptr since we only
-  // want to allocate memory, not initialize it
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_pboSize, m_pboSize, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, nullptr);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  // These last two are critical for textures whose dimension are not a power of
-  // 2
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-  textureReload();
-}
-
 void MyPanelOpenGL::textureReload() {
-  // Run CUDA kernel to populate PBO
   if(m_vis){
-  if(!m_vis->isReady()){
-    m_vis->init();
-  }
-
-  m_vis->update();
-  //m_wrapper.run(m_real, m_imaginary);
-  // Read Texture data from PBO
-  //glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
-  m_texture2->bind();
-  m_vis->textureReload();
-//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
-  //                GL_UNSIGNED_BYTE, nullptr);
+    m_vis->textureReload();
   }
 }

@@ -3,18 +3,19 @@
 #include "juliaKernel.h"
 #include "rippleKernel.h"
 #include "userBufferKernel.h"
-#include <iostream>
 
 
 int main(int argc, char *argv[]) {
   /* TODO: use width, height to control size of window */
-  QTViewer viewer(argc, argv, 10, 10, "SnickerDoodle");
+  QTViewer viewer(argc, argv, 10, 10, "QtCUDAVis");
 
+  int height = 800;
+  int width = 800;
   /* TODO: generalize this class */
-  DataVisCUDA* vis = new DataVisCUDA(1000,1000);
+  DataVisCUDA* vis = new DataVisCUDA(width,height);
   //Animator* kern = new JuliaKernel(-0.8,0.156);
   //Animator* kern = new RippleKernel();
-  Animator* kern = new UserBufferKernel(1000,1000);
+  Animator* kern = new UserBufferKernel(width,height);
 
   vis->setAnimator(kern);
   viewer.setAnimation(vis);
