@@ -11,43 +11,43 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
     : QOpenGLWidget(parent), m_angles(0., 0., 0.) {
 
   for (int i = 0; i < CS40_NUM_PROGS; i++) {
-    m_shaderPrograms[i] = NULL;
-    m_vertexShaders[i] = NULL;
-    m_fragmentShaders[i] = NULL;
+    m_shaderPrograms[i] = nullptr;
+    m_vertexShaders[i] = nullptr;
+    m_fragmentShaders[i] = nullptr;
   }
 
-  m_sphere = NULL;
-  m_vis = NULL;
-  m_timer = NULL;
+  m_sphere = nullptr;
+  m_vis = nullptr;
+  m_timer = nullptr;
   m_paused = false;
   m_drawSphere = false;
   m_polymode = 2;
   m_cull = true;
   m_curr_prog = 0;
   m_tex_map = 1;
-  m_pbo = NULL;
+  m_pbo = nullptr;
   m_pboSize = 1000;
   m_real = -0.8;
   m_imaginary = 0.156;
-  m_texture = m_texture2 = NULL;
+  m_texture = m_texture2 = nullptr;
 }
 
 MyPanelOpenGL::~MyPanelOpenGL() {
   m_shaderPrograms[m_curr_prog]->release();
   delete m_sphere;
-  m_sphere = NULL;
+  m_sphere = nullptr;
   delete m_square;
-  m_square = NULL;
+  m_square = nullptr;
   delete m_texture;
-  m_texture = NULL;
+  m_texture = nullptr;
   delete m_texture2;
-  m_texture2 = NULL;
+  m_texture2 = nullptr;
   delete m_timer;
-  m_timer = NULL;
+  m_timer = nullptr;
   if(m_vis){
     m_vis->disconnect();
     delete m_vis;
-    m_vis = NULL;
+    m_vis = nullptr;
   }
   destroyShaders(0);
 }
@@ -286,14 +286,14 @@ void MyPanelOpenGL::createShaders(int i, QString vertName, QString fragName) {
 
 void MyPanelOpenGL::destroyShaders(int i) {
   delete m_vertexShaders[i];
-  m_vertexShaders[i] = NULL;
+  m_vertexShaders[i] = nullptr;
   delete m_fragmentShaders[i];
-  m_fragmentShaders[i] = NULL;
+  m_fragmentShaders[i] = nullptr;
 
   if (m_shaderPrograms[i]) {
     m_shaderPrograms[i]->release();
     delete m_shaderPrograms[i];
-    m_shaderPrograms[i] = NULL;
+    m_shaderPrograms[i] = nullptr;
   }
 }
 
@@ -304,10 +304,10 @@ void MyPanelOpenGL::createPBO() {
   m_texture2->create();
   m_texture2->bind();
 
-  // Allocate the texture memory. The last parameter is NULL since we only
+  // Allocate the texture memory. The last parameter is nullptr since we only
   // want to allocate memory, not initialize it
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_pboSize, m_pboSize, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, NULL);
+               GL_UNSIGNED_BYTE, nullptr);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -333,6 +333,6 @@ void MyPanelOpenGL::textureReload() {
   m_texture2->bind();
   m_vis->textureReload();
 //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_pboSize, m_pboSize, GL_RGBA,
-  //                GL_UNSIGNED_BYTE, NULL);
+  //                GL_UNSIGNED_BYTE, nullptr);
   }
 }

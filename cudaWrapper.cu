@@ -3,7 +3,7 @@
 #include <cuda.h>
 #include <cuda_gl_interop.h>
 
-CUDAWrapper::CUDAWrapper() : m_pbo_CUDA(NULL){};
+CUDAWrapper::CUDAWrapper() : m_pbo_CUDA(nullptr){};
 
 void CUDAWrapper::init() {
    /* deprecated as of CUDA 5.0 */
@@ -21,7 +21,7 @@ void CUDAWrapper::connect(GLuint buffID) {
 void CUDAWrapper::disconnect() {
   if (m_pbo_CUDA) {
     cudaGraphicsUnregisterResource(m_pbo_CUDA);
-    m_pbo_CUDA=NULL;
+    m_pbo_CUDA=nullptr;
   }
 }
 

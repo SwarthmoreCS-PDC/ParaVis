@@ -6,14 +6,14 @@
 #include <cstdio>
 
 CPUTimer::CPUTimer() {
-  gettimeofday(&startTime, NULL);
-  gettimeofday(&stopTime, NULL);
+  gettimeofday(&startTime, nullptr);
+  gettimeofday(&stopTime, nullptr);
 }
 
-void CPUTimer::start() { gettimeofday(&startTime, NULL); }
+void CPUTimer::start() { gettimeofday(&startTime, nullptr); }
 
 void CPUTimer::stop() {
-  gettimeofday(&stopTime, NULL);
+  gettimeofday(&stopTime, nullptr);
   timeSub(stopDiff, startTime, stopTime);
 }
 
@@ -35,7 +35,7 @@ void CPUTimer::print() {
 
 float CPUTimer::elapsed() {
   struct timeval now;
-  gettimeofday(&now, NULL);
+  gettimeofday(&now, nullptr);
   timeSub(curDiff, startTime, now);
   return curDiff.tv_sec * 1000 + curDiff.tv_usec / (1000.);
 }

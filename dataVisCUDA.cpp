@@ -46,7 +46,7 @@ void DataVisCUDA::textureReload() {
   // Read Texture data from PBO
   glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo->bufferId());
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB,
-                  GL_UNSIGNED_BYTE, NULL);
+                  GL_UNSIGNED_BYTE, nullptr);
 }
 
 void DataVisCUDA::createPBO(){
@@ -66,6 +66,6 @@ void DataVisCUDA::destroyPBO(){
   if (m_pbo) {
     m_pbo->release();
     delete m_pbo;
-    m_pbo = NULL;
+    m_pbo = nullptr;
   }
 }
