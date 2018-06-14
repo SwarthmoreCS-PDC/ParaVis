@@ -3,16 +3,16 @@
 #include "juliaKernel.h"
 
 __device__ int julia(int x, int y, int w, int h, float re, float im);
-__global__ void kernel(uchar3 *ptr, int w, int h, float re, float im);
+__global__ void kernel(color3 *ptr, int w, int h, float re, float im);
 
-void JuliaKernel::update(void* buff, int w, int h) {
+void JuliaKernel::update(color3* buff, int w, int h) {
 
   dim3 grid(w, h);
   float im = m_im;
   float re = m_re;
   im += 0.2 * sin(m_ticks/20.);
   re += 0.3 * cos(m_ticks/17.);
-  kernel<<<grid, 1>>>((uchar3*)buff, w, h, re, im);
+  kernel<<<grid, 1>>>(buff, w, h, re, im);
   m_ticks = (m_ticks+1)%1234;
 }
 
@@ -48,7 +48,7 @@ __device__ int julia(int x, int y, int w, int h, float re, float im) {
   return 1;
 }
 
-__global__ void kernel(uchar3 *ptr, int w, int h, float re, float im) {
+__global__ void kernel(color3 *ptr, int w, int h, float re, float im) {
   // map from threadIdx/BlockIdx to pixel position
   int x = blockIdx.x;
   int y = blockIdx.y;
@@ -56,7 +56,7 @@ __global__ void kernel(uchar3 *ptr, int w, int h, float re, float im) {
 
   // now calculate the value at that position
   int juliaValue = julia(x, y, w, h, re, im);
-  ptr[offset].x = 255 * juliaValue;
-  ptr[offset].y = 0;
-  ptr[offset].z = 64 * (1 - juliaValue);
+  ptr[offset].r = 255 * juliaValue;
+  ptr[offset].g = 0;
+  ptr[offset].b = 64 * (1 - juliaValue);
 }

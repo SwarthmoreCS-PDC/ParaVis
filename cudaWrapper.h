@@ -2,6 +2,7 @@
 
 #include <GL/gl.h>
 #include <cuda.h>
+#include "color3.h"
 
 /* Wrapper class for connecting OpenGL context to CUDA */
 class CUDAWrapper {
@@ -20,7 +21,7 @@ public:
   /* Release CUDA resource connected to Pixel Buffer*/
   void disconnect();
 
-  void* map();
+  color3* map();
 
   void unmap();
 

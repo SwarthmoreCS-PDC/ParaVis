@@ -72,8 +72,8 @@ symlink_data(shaders *.glsl)
 add_subdirectory(common)
 
 cuda_add_library(cudawrapper
-  cudaWrapper.h juliaKernel.h
-  cudaWrapper.cu juliaKernel.cu
+  cudaWrapper.h juliaKernel.h rippleKernel.h userBufferKernel.h
+  cudaWrapper.cu juliaKernel.cu rippleKernel.cu userBufferKernel.cu
   )
 
 #QT headers requiring MOC (meta object compiler)
@@ -101,9 +101,12 @@ set(SRC
 set(SHDRS
   qtViewer.h
   qoglHelper.h
+  color3.h
 )
 
 ADD_EXECUTABLE(interop ${SRC} ${SHDRS} ${MYQTFILES})
 
-TARGET_LINK_LIBRARIES(interop ${GLLIBS} ${MYLIBS} cudawrapper libcommon
+TARGET_LINK_LIBRARIES(interop
+  ${MYLIBS} cudawrapper libcommon mycudautil
+  ${GLLIBS}
   Qt5::Core Qt5::Gui Qt5::OpenGL)

@@ -25,16 +25,16 @@ void CUDAWrapper::disconnect() {
   }
 }
 
-void* CUDAWrapper::map(){
+color3* CUDAWrapper::map(){
 
-  uchar3 *dev_pixBuffer;
+  color3 *dev_pixBuffer;
   size_t numBytes;
 
   // Map buffer object for writing from CUDA
   cudaGraphicsMapResources(1, &m_pbo_CUDA);
   cudaGraphicsResourceGetMappedPointer((void **)&dev_pixBuffer, &numBytes,
                                        m_pbo_CUDA);
-  return (void *) dev_pixBuffer;
+  return dev_pixBuffer;
 }
 
 void CUDAWrapper::unmap(){

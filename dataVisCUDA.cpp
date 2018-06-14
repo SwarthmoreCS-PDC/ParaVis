@@ -14,7 +14,7 @@ void DataVisCUDA::init() {
 }
 
 void DataVisCUDA::update(){
-  void* buff = m_wrapper.map();
+  color3* buff = m_wrapper.map();
   //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
   if(m_animate){
     m_animate->update(buff, m_width, m_height);
