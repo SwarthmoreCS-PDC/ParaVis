@@ -11,7 +11,6 @@ DataVisCUDA::DataVisCUDA(int w, int h, int d) :
 
 DataVisCUDA::~DataVisCUDA(){
     disconnect();
-    delete m_texture; m_texture=nullptr;
 }
 
 void DataVisCUDA::init() {

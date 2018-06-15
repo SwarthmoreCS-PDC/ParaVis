@@ -43,7 +43,7 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   destroyShaders(0);
 }
 
-void MyPanelOpenGL::setVisulization(DataVis* vis){
+void MyPanelOpenGL::setAnimation(DataVis* vis){
   m_vis = vis;
   textureReload();
 }
@@ -58,6 +58,8 @@ void MyPanelOpenGL::initializeGL() {
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   createShaders(0, "vshader.glsl", "fshader.glsl");
+
+  /* TODO: don't hard code this or make it part of distribution */
   m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
 
   m_sphere = new Sphere(0.5, 30, 30);
