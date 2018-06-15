@@ -7,7 +7,7 @@
 
 #include "common/sphere.h"
 #include "common/square.h"
-#include "dataVisCUDA.h"
+#include "dataVis.h"
 #include <QKeyEvent>
 #include <QMatrix4x4>
 #include <QtOpenGL>
@@ -31,7 +31,7 @@ protected:
 public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
-  void setVisulization(DataVisCUDA* vis);
+  void setVisulization(DataVis* vis);
 
 private:
   /* simple test shapes */
@@ -49,7 +49,7 @@ private:
   QTimer* m_timer;
   int m_tex_map;
 
-  DataVisCUDA* m_vis;
+  DataVis* m_vis;
 
   vec3 m_angles; /* Euler angles for rotation */
 

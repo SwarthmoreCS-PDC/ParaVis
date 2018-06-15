@@ -2,12 +2,12 @@
 
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
-//#include "qoglHelper.h"
+#include "dataVis.h"
 #include "cudaWrapper.h"
 #include "animator.h"
 #include "imageBuffer.h"
 
-class DataVisCUDA {
+class DataVisCUDA: public DataVis {
 
 public:
   // Depth d currently not used
@@ -22,12 +22,6 @@ public:
   inline void setAnimator( Animator* animate){
     m_animate = animate;
   }
-
-protected:
-  int m_width, m_height, m_depth;
-  bool m_ready;
-  QOpenGLTexture *m_texture;
-  ImageBuffer m_image;
 
 private:
   QOpenGLBuffer *m_pbo; /* Pixel Buffer Object */

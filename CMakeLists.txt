@@ -43,11 +43,13 @@ include_directories(
 
 set(UTIL_HEADERS
   timerBase.h timerCPU.h
+  dataVis.h
   dataVisCUDA.h
   )
 
 set(UTIL_SRC
   timerCPU.cpp
+  dataVis.cpp
   dataVisCUDA.cpp
   )
 

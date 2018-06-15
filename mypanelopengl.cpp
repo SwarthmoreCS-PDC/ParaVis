@@ -43,7 +43,7 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   destroyShaders(0);
 }
 
-void MyPanelOpenGL::setVisulization(DataVisCUDA* vis){
+void MyPanelOpenGL::setVisulization(DataVis* vis){
   m_vis = vis;
   textureReload();
 }

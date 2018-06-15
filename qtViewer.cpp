@@ -24,7 +24,7 @@ QTViewer::~QTViewer(){
   delete m_app; m_app=nullptr;
 }
 
-void QTViewer::setAnimation(DataVisCUDA* vis){
+void QTViewer::setAnimation(DataVis* vis){
   m_window->getGLThing()->setVisulization(vis);
 }
 

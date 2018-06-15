@@ -4,14 +4,9 @@
 
 
 DataVisCUDA::DataVisCUDA(int w, int h, int d) :
-   m_width(w), m_height(h), m_depth(d),
-   m_ready(false), m_texture(nullptr),
+   DataVis(w,h,d),
    m_pbo(nullptr), m_animate(nullptr) {
-
-     m_image.height=h;
-     m_image.width=w;
-     m_image.depth=d;
-     m_image.buffer=nullptr;
+ /* do nothing */
 };
 
 DataVisCUDA::~DataVisCUDA(){
@@ -74,22 +69,7 @@ void DataVisCUDA::createPBO(){
   m_wrapper.connect(m_pbo->bufferId()); // Inform CUDA about PBO
   m_pbo->release();
 
-  //Create Texture
-  m_texture = new QOpenGLTexture(QOpenGLTexture::Target2D);
-  // Create ID, allocate space for Texture
-  m_texture->create();
-  m_texture->bind();
-  m_texture->setSize(m_width, m_height);
-  m_texture->setFormat(QOpenGLTexture::RGB8_UNorm);
-  m_texture->allocateStorage();
-  // Allocate the texture memory. The last parameter is nullptr since we only
-  // want to allocate memory, not initialize it
-  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB,
-  //             GL_UNSIGNED_BYTE, nullptr);
-
-  QOpenGLTexture::Filter filt = QOpenGLTexture::Linear;
-  m_texture->setMinMagFilters(filt, filt);
-  m_texture->setWrapMode(QOpenGLTexture::ClampToEdge);
+  createTexture();
 }
 
 void DataVisCUDA::destroyPBO(){

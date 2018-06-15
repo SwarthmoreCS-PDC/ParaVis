@@ -10,7 +10,7 @@ class QTViewer{
   public:
     QTViewer(int argc, char* argv[], int w, int h, QString title);
     ~QTViewer();
-    void setAnimation(DataVisCUDA* vis);
+    void setAnimation(DataVis* vis);
     int run();
   private:
      QApplication* m_app;
