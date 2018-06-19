@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mainwindow.h"
-#include "dataVisCUDA.h"
+#include "dataVis.h"
 #include <QApplication>
 #include <QString>
 
