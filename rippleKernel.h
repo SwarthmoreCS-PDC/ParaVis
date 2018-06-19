@@ -3,7 +3,8 @@
 #include "animator.h"
 #include <cuda.h>
 
-/* Ripple Kernel stuff */
+/* A CUDA Animation that displays a radial
+   greyscale ripple effect  */
 class RippleKernel: public Animator {
 
 public:
@@ -13,6 +14,6 @@ public:
   void update(ImageBuffer* img);
 
 private:
-  int m_ticks;
+  int m_ticks; /* number of timesteps in animation */
 
 };

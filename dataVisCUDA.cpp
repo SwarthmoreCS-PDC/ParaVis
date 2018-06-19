@@ -20,7 +20,7 @@ void DataVisCUDA::init() {
 }
 
 void DataVisCUDA::update(){
-  if(!isReady()){ init(); }
+  if(!m_ready){ init(); }
   color3* buff = m_wrapper.map();
   m_image.buffer=buff;
   //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
@@ -30,9 +30,6 @@ void DataVisCUDA::update(){
   m_wrapper.unmap();
 }
 
-void DataVisCUDA::bind(){
-  m_texture->bind();
-}
 
 void DataVisCUDA::connect() {
   if(!m_pbo){

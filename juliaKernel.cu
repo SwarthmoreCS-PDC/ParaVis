@@ -11,11 +11,18 @@ void JuliaKernel::update(ImageBuffer* img) {
   w = img->width;
   h = img->height;
   dim3 grid(w, h);
+
   float im = m_im;
   float re = m_re;
+
+  /* tweak seed by time to produce animation */
   im += 0.2 * sin(m_ticks/20.);
   re += 0.3 * cos(m_ticks/17.);
+
+  /* call kernel */
   kernel<<<grid, 1>>>(img->buffer, w, h, re, im);
+
+  /* update time */
   m_ticks = (m_ticks+1)%1234;
 }
 

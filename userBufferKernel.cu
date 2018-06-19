@@ -9,21 +9,25 @@ UserBufferKernel::UserBufferKernel(int w, int h):
   m_dev_grid(nullptr),
   m_rows(h), m_cols(w) {
 
+  /* allocate some memory on the CPU first */
   int* cpu_data = new int[m_rows*m_cols];
+  /* populate CPU memory with data  */
   for (int r = 0; r < h; r++) {
     for (int c = 0; c < w; c++) {
       cpu_data[r * w + c] = c;
     }
   }
 
+  /* allocated GPU buffer */
   int bufSize = sizeof(int)*w*h;
   HANDLE_ERROR(
     cudaMalloc((void**)&m_dev_grid, bufSize));
 
+  /* copy CPU data to GPU */
   HANDLE_ERROR(
     cudaMemcpy(m_dev_grid, cpu_data, bufSize, cudaMemcpyHostToDevice));
 
-  // after copy, data not needed on CPU
+  /* after copy, data not needed on CPU */
   delete [] cpu_data; cpu_data = nullptr;
 };
 

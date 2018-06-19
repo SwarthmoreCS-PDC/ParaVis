@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
      derived from the Animator class that use CUDA code as shown in the
      examples below */
   //Animator* kern = new JuliaKernel(-0.8,0.156);
-  //Animator* kern = new RippleKernel();
-  Animator* kern = new UserBufferKernel(width,height);
+  Animator* kern = new RippleKernel();
+  //Animator* kern = new UserBufferKernel(width,height);
 
   /* 2b. CUDA users connect their kernel to DataVisCUDA class through the
      setAnimator method */
