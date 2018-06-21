@@ -7,6 +7,11 @@ DataVis::DataVis(int w, int h, int d):
      m_image.width=w;
      m_image.depth=d;
      m_image.buffer=nullptr;
+
+     /* Allows image buffer with dimensions
+        that are not powers of 2 to write
+        to OpenGL textures properly */
+     m_options.setAlignment(1);
    }
 
 DataVis::~DataVis(){

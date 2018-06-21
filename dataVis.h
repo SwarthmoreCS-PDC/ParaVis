@@ -1,7 +1,9 @@
 #pragma once
 
-#include <QOpenGLTexture>
+
 #include "imageBuffer.h"
+#include <QOpenGLTexture>
+#include <QOpenGLPixelTransferOptions>
 
 /* The DataVis class is the primary connection between
    the animation library and user provided code that
@@ -55,6 +57,9 @@ protected:
   /* The underlying OpenGL texture representation of the
      Image Buffer */
   QOpenGLTexture *m_texture;
+
+  QOpenGLPixelTransferOptions m_options;
+
   /* Color data populated by the user and eventually
      displayed on the screen */
   ImageBuffer m_image;
