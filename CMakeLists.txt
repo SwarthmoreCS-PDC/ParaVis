@@ -17,9 +17,10 @@ cuda_include_directories(${CUDA_INC} ${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${CUDA_SDK}/lib/)
 # CUDA 8 gets grumpy about deprecated archs
 if (CUDA_VERSION VERSION_GREATER "7.5")
-  #CMake 3.7
-  #CUDA_SELECT_NVCC_ARCH_FLAGS(ARCH_FLAGS Auto)
-  LIST(APPEND CUDA_NVCC_FLAGS "-arch=sm_30")
+  #CMake 3.7+
+  CUDA_SELECT_NVCC_ARCH_FLAGS(ARCH_FLAGS Auto)
+  LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})
+  #LIST(APPEND CUDA_NVCC_FLAGS "-arch=sm_30")
 endif()
 
 #get symlink_data macro
@@ -44,12 +45,14 @@ include_directories(
 set(UTIL_HEADERS
   timerBase.h timerCPU.h
   dataVis.h
+  dataVisCPU.h
   dataVisCUDA.h
   )
 
 set(UTIL_SRC
   timerCPU.cpp
   dataVis.cpp
+  dataVisCPU.cpp
   dataVisCUDA.cpp
   )
 
@@ -94,7 +97,6 @@ SET(MYQTFILES ${QTHDRS_MOC} ${QTFORMS_HDRS})
 
 #normal source files
 set(SRC
-  main.cpp
   mainwindow.cpp
   mypanelopengl.cpp
   qtViewer.cpp
@@ -107,9 +109,9 @@ set(SHDRS
   imageBuffer.h
 )
 
-ADD_EXECUTABLE(interop ${SRC} ${SHDRS} ${MYQTFILES})
+add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
+set(COMLIBS myvis ${MYLIBS} shapes ${GLLIBS}
+Qt5::Core Qt5::Gui Qt5::OpenGL)
 
-TARGET_LINK_LIBRARIES(interop
-  ${MYLIBS} cudawrapper libcommon mycudautil
-  ${GLLIBS}
-  Qt5::Core Qt5::Gui Qt5::OpenGL)
+ADD_EXECUTABLE(cudaDemos cudaDemos.cpp)
+TARGET_LINK_LIBRARIES(cudaDemos ${COMLIBS} cudawrapper mycudautil)
