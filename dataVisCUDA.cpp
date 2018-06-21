@@ -1,6 +1,4 @@
 #include "dataVisCUDA.h"
-#include "juliaKernel.h"
-#include <iostream>
 
 
 DataVisCUDA::DataVisCUDA(int w, int h, int d) :
@@ -23,7 +21,6 @@ void DataVisCUDA::update(){
   if(!m_ready){ init(); }
   color3* buff = m_wrapper.map();
   m_image.buffer=buff;
-  //static JuliaKernel kern(m_width,m_height,-0.8,0.156);
   if(m_animate){
     m_animate->update(&m_image);
   }
@@ -48,7 +45,7 @@ void DataVisCUDA::textureReload() {
   m_texture->bind();
   // Read Texture data from PBO
   m_pbo->bind();
-  m_texture->setData(QOpenGLTexture::RGB, QOpenGLTexture::UInt8, (const void *) nullptr);
+  m_texture->setData(QOpenGLTexture::RGB, QOpenGLTexture::UInt8, (const void *) nullptr, &m_options);
   m_pbo->release();
 }
 

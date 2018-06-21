@@ -1,11 +1,9 @@
 #pragma once
 
-#include <QOpenGLBuffer>
-#include <QOpenGLTexture>
 #include "dataVis.h"
 #include "cudaWrapper.h"
 #include "animator.h"
-#include "imageBuffer.h"
+#include <QOpenGLBuffer>
 
 /* TODO: clean up the implementation of this perhaps?
    unclear if the map/unmap is needed on every update
