@@ -1,6 +1,6 @@
 #include "qtViewer.h"
 #include "mypanelopengl.h"
-#include "dataVisCUDA.h"
+#include "dataVis.h"
 #include <QSurfaceFormat>
 #include <iostream>
 #include <string>
