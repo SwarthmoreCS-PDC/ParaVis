@@ -1,12 +1,14 @@
 #include "pthreadVis.h"
 #include <pthread.h>
-
+#include <iostream>
+//pthread_barrier_t barrier;
 
 void *threadUpdate(void* info){
   threadInfo* tinfo = (threadInfo*) info;
   int off;
   int w,h;
   int rowstart, rowstop, maxrows;
+  int ticks = 0;
   unsigned char val;
   w= tinfo->img->width;
   h= tinfo->img->height;
@@ -17,46 +19,47 @@ void *threadUpdate(void* info){
   rowstop=rowstart+maxrows;
   if(rowstop > h) { rowstop = h; }
 
-  for(int r=rowstart; r<rowstop; r++){
-    for(int c=0; c<w; c++){
-      off = r*w+c;
-      val = (unsigned char) (128. * r /maxrows);
-      val = (val+tinfo->ticks)%128;
-      tinfo->img->buffer[off].r=val;
-      tinfo->img->buffer[off].g=0;
-      tinfo->img->buffer[off].b=128-val;
+  while(true){
+    for(int r=rowstart; r<rowstop; r++){
+      for(int c=0; c<w; c++){
+        off = r*w+c;
+        val = (unsigned char) (128. * r /maxrows);
+        val = (val+ticks)%128;
+        tinfo->img->buffer[off].r=val;
+        tinfo->img->buffer[off].g=0;
+        tinfo->img->buffer[off].b=128-val;
+      }
     }
+    pthread_barrier_wait(tinfo->barrier);
+    ticks++;
   }
   return nullptr;
 }
 
 PThreadVis::PThreadVis(int numThreads, int w, int h, int d) :
-   DataVisCPU(w,h,d), m_ticks(0), m_numThreads(numThreads){
-   /* do nothing */
+   DataVisCPU(w,h,d), m_numThreads(numThreads),
+   m_threads(nullptr), m_tinfo(nullptr) {
+  int i;
+  m_threads = new pthread_t[m_numThreads];
+  m_tinfo = new threadInfo[m_numThreads];
+  m_tinfo[0].nThreads=m_numThreads;
+  m_tinfo[0].img=&m_image;
+  m_tinfo[0].barrier=&m_barrier;
+  pthread_barrier_init(&m_barrier, nullptr, m_numThreads+1);
+  for(i=0;i<m_numThreads;i++){
+    m_tinfo[i]=m_tinfo[0];
+    m_tinfo[i].id=i;
+    pthread_create(&m_threads[i], nullptr, threadUpdate, (void*)&m_tinfo[i]);
+  }
+  pthread_barrier_wait(&m_barrier);
+
 };
 
 PThreadVis::~PThreadVis(){
-  /* do nothing */
+  delete [] m_threads; m_threads=nullptr;
+  delete [] m_tinfo; m_tinfo=nullptr;
 }
 
 void PThreadVis::update() {
-  pthread_t* threads;
-  threadInfo* tinfo;
-  int i;
-  threads = new pthread_t[m_numThreads];
-  tinfo = new threadInfo[m_numThreads];
-  tinfo[0].nThreads=m_numThreads;
-  tinfo[0].ticks=m_ticks;
-  tinfo[0].img=&m_image;
-  for(i=0;i<m_numThreads;i++){
-    tinfo[i]=tinfo[0];
-    tinfo[i].id=i;
-    pthread_create(&threads[i], nullptr, threadUpdate, (void*)&tinfo[i]);
-  }
-  for(i=0;i<m_numThreads;i++){
-    pthread_join(threads[i], nullptr);
-  }
-  m_ticks += 1;
-  delete [] threads; threads=nullptr;
-  delete [] tinfo; tinfo=nullptr;
+  pthread_barrier_wait(&m_barrier);
 }

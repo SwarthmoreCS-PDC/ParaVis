@@ -16,10 +16,10 @@ int main(int argc, char *argv[]) {
      derive from the DataVisCUDA class and specify the
      width and height of our desired grid, but a second step, 2b.
      is needed to connect a CUDA kernel to this class */
-  int width = 800;
-  int height = 800;
+  int width = 200;
+  int height = 200;
 
-  DataVis* vis = new PThreadVis(8, width,height);
+  DataVis* vis = new PThreadVis(2, width,height);
 
   /* 3. All users must inform the viewer of their DataVis animation with
      the setAnimation method */

@@ -2,15 +2,16 @@
 
 
 #include "dataVisCPU.h"
+#include <pthread.h>
 
 typedef struct {
   int nThreads;
   int id;
-  int ticks;
   ImageBuffer* img;
+  pthread_barrier_t* barrier;
 } threadInfo;
 
-/* Eventually a PThreads Demo */
+/* A PThreads Demo */
 class PThreadVis: public DataVisCPU {
 
 public:
@@ -21,7 +22,9 @@ public:
   void update();
 
 private:
-  int m_ticks;
   int m_numThreads;
+  pthread_t* m_threads;
+  threadInfo* m_tinfo;
+  pthread_barrier_t m_barrier;
 
 };
