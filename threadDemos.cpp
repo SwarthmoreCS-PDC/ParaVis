@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   int width = 800;
   int height = 800;
 
-  DataVis* vis = new PThreadVis(4, width,height);
+  DataVis* vis = new PThreadVis(8, width,height);
 
   /* 3. All users must inform the viewer of their DataVis animation with
      the setAnimation method */

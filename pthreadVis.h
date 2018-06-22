@@ -6,9 +6,8 @@
 typedef struct {
   int nThreads;
   int id;
-  int width;
-  int height;
   int ticks;
+  ImageBuffer* img;
 } threadInfo;
 
 /* Eventually a PThreads Demo */
