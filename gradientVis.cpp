@@ -1,18 +1,16 @@
-#include "pthreadVis.h"
-#include <pthread.h>
+#include "gradientVis.h"
 
 
-PThreadVis::PThreadVis(int numThreads, int w, int h, int d) :
-   DataVisCPU(w,h,d), m_ticks(0), m_numThreads(numThreads){
+GradientVis::GradientVis(int w, int h, int d) :
+   DataVisCPU(w,h,d), m_ticks(0){
    /* do nothing */
 };
 
-PThreadVis::~PThreadVis(){
+GradientVis::~GradientVis(){
   /* do nothing */
 }
 
-void PThreadVis::update() {
-  /* TODO: do something */
+void GradientVis::update() {
   int off;
   unsigned char val;
   for(int r=0; r<m_height; r++){
@@ -23,9 +21,7 @@ void PThreadVis::update() {
       m_image.buffer[off].r=val;
       m_image.buffer[off].g=0;
       m_image.buffer[off].b=128-val;
-
     }
   }
   m_ticks += 1;
-
 }

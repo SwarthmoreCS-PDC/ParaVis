@@ -1,5 +1,5 @@
 #include "qtViewer.h"
-#include "gradientVis.h"
+#include "pthreadVis.h"
 
 /* A Demo of how to use the parallel grid data visualization toolkit
  */
@@ -16,10 +16,10 @@ int main(int argc, char *argv[]) {
      derive from the DataVisCUDA class and specify the
      width and height of our desired grid, but a second step, 2b.
      is needed to connect a CUDA kernel to this class */
-  int width = 50;
-  int height = 50;
+  int width = 800;
+  int height = 800;
 
-  DataVis* vis = new GradientVis(width,height);
+  DataVis* vis = new PThreadVis(4, width,height);
 
   /* 3. All users must inform the viewer of their DataVis animation with
      the setAnimation method */
