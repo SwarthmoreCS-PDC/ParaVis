@@ -136,7 +136,13 @@ if(CMAKE_USE_PTHREADS_INIT)
   set(THREAD_DEMO_SRC
     pthreadVis.cpp
   )
+  if(APPLE)
+    add_subdirectory(osxbarrier)
+  endif()
   add_library(demothread ${THREAD_DEMO_HDRS} ${THREAD_DEMO_SRC})
   ADD_EXECUTABLE(threadDemos threadDemos.cpp)
   TARGET_LINK_LIBRARIES(threadDemos demothread ${COMLIBS} Threads::Threads )
+  if(APPLE)
+  TARGET_LINK_LIBRARIES(threadDemos osxbarrier)
+  endif()
 endif()
