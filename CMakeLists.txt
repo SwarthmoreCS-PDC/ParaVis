@@ -24,9 +24,10 @@ include_directories(
 add_subdirectory(common)
 
 set(UTIL_HEADERS
-  timerBase.h timerCPU.h
-  dataVis.h
-  dataVisCPU.h
+  include/timerBase.h
+  include/timerCPU.h
+  include/dataVis.h
+  include/dataVisCPU.h
   )
 
 set(UTIL_SRC
@@ -35,12 +36,17 @@ set(UTIL_SRC
   dataVisCPU.cpp
   )
 
+
 add_library(myutil ${UTIL_HEADERS} ${UTIL_SRC})
+target_include_directories(myutil PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include> )
+
 
 #QT headers requiring MOC (meta object compiler)
 set(QTHDRS
-  mainwindow.h
-  mypanelopengl.h
+  include/mainwindow.h
+  include/mypanelopengl.h
   )
 
 #window design files
@@ -59,13 +65,17 @@ set(SRC
 )
 
 set(SHDRS
-  qtViewer.h
-  qoglHelper.h
-  color3.h
-  imageBuffer.h
+  include/qtViewer.h
+  include/qoglHelper.h
+  include/color3.h
+  include/imageBuffer.h
 )
 
 add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
+target_include_directories(myvis PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include> )
+
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
@@ -77,7 +87,7 @@ add_subdirectory(demos)
 #for CUDA
 FIND_PACKAGE(CUDA QUIET)
 if(CUDA_FOUND)
-  cuda_include_directories(${CUDA_INC} ${CMAKE_CURRENT_SOURCE_DIR})
+  cuda_include_directories(${CUDA_INC} ${CMAKE_SOURCE_DIR}/include)
   link_directories(${CUDA_SDK}/lib/)
   # CUDA 8 gets grumpy about deprecated archs
   if (CUDA_VERSION VERSION_GREATER "7.5")
@@ -89,15 +99,17 @@ if(CUDA_FOUND)
 endif()
 
 if (CUDA_FOUND)
-  add_library(cudaqt dataVisCUDA.cpp dataVisCUDA.h ${UTIL_HEADERS})
+  add_library(cudaqt dataVisCUDA.cpp include/dataVisCUDA.h ${UTIL_HEADERS})
+  target_include_directories(cudaqt PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include> )
 
   set(GPU_UTIL_HEADERS
-    handle_cuda_error.h
-    timerBase.h timerGPU.h
-    dataVis.h
-    timerBase.h
-    cudaWrapper.h
-    dataVisCUDA.h
+    include/handle_cuda_error.h
+    include/timerBase.h include/timerGPU.h
+    include/dataVis.h
+    include/cudaWrapper.h
+    include/dataVisCUDA.h
     )
 
   set(GPU_UTIL_SRC
@@ -107,7 +119,6 @@ if (CUDA_FOUND)
     )
 
   cuda_add_library(mycudautil ${GPU_UTIL_HEADERS} ${GPU_UTIL_SRC})
-
   add_subdirectory(demos/cuda)
 endif()
 

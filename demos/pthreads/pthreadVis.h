@@ -3,8 +3,9 @@
 
 #include "dataVisCPU.h"
 #include <pthread.h>
+
 #ifdef __APPLE__
-#include "osxbarrier/pthread_barrier.h"
+#include "osx/pthread_barrier.h"
 #endif
 
 typedef struct {
