@@ -110,15 +110,7 @@ if (CUDA_FOUND)
 
   cuda_add_library(mycudautil ${GPU_UTIL_HEADERS} ${GPU_UTIL_SRC})
 
-  cuda_add_library(cudademos
-  juliaKernel.h rippleKernel.h userBufferKernel.h
-  juliaKernel.cu rippleKernel.cu userBufferKernel.cu
-  )
-
-  set(CUDALIBS cudaqt mycudautil cudademos)
-
-  ADD_EXECUTABLE(cudaDemos cudaDemos.cpp)
-  TARGET_LINK_LIBRARIES(cudaDemos ${CUDALIBS} ${COMLIBS})
+  add_subdirectory(demos/cuda)
 endif()
 
 FIND_PACKAGE(Threads)
