@@ -115,34 +115,13 @@ endif()
 
 FIND_PACKAGE(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
-  set(THREAD_DEMO_HDRS
-    pthreadVis.h
-  )
-  set(THREAD_DEMO_SRC
-    pthreadVis.cpp
-  )
   if(APPLE)
     add_subdirectory(osxbarrier)
   endif()
-  add_library(demothread ${THREAD_DEMO_HDRS} ${THREAD_DEMO_SRC})
-  ADD_EXECUTABLE(threadDemos threadDemos.cpp)
-  TARGET_LINK_LIBRARIES(threadDemos demothread ${COMLIBS} Threads::Threads )
-  if(APPLE)
-  TARGET_LINK_LIBRARIES(threadDemos osxbarrier)
-  endif()
+  add_subdirectory(demos/pthreads)
 endif()
 
 FIND_PACKAGe(OpenMP)
 if(OpenMP_FOUND OR OPENMP_FOUND)
-    set(OPENMP_DEMO_HDRS
-    openmpVis.h
-  )
-  set(OPENMP_DEMO_SRC
-    openmpVis.cpp
-  )
-  SET(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  add_library(demoopenmp ${OPENMP_DEMO_HDRS} ${OPENMP_DEMO_SRC})
-  ADD_EXECUTABLE(openmpDemos openmpDemos.cpp)
-  TARGET_LINK_LIBRARIES(openmpDemos demoopenmp ${COMLIBS})
+  add_subdirectory(demos/openMP)
 endif()

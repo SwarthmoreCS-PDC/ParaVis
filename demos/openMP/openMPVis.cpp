@@ -1,4 +1,4 @@
-#include "openmpVis.h"
+#include "openMPVis.h"
 
 
 OpenMPVis::OpenMPVis(int w, int h, int d) :

@@ -1,5 +1,5 @@
 #include "qtViewer.h"
-#include "openmpVis.h"
+#include "pthreadVis.h"
 
 /* A Demo of how to use the parallel grid data visualization toolkit
  */
@@ -9,17 +9,17 @@ int main(int argc, char *argv[]) {
      as the first arguments (needed by QT), and an optional title as the
      fifth argument */
   /* TODO: use width, height to control size of window */
-  QTViewer viewer(argc, argv, 10, 10, "QtCPU");
+  QTViewer viewer(argc, argv, 10, 10, "QtThreads");
 
   /* 2. Dynamically create a derived instance of the
      DataVis class. In the case of CUDA examples, we
      derive from the DataVisCUDA class and specify the
      width and height of our desired grid, but a second step, 2b.
      is needed to connect a CUDA kernel to this class */
-  int width = 50;
-  int height = 50;
+  int width = 200;
+  int height = 200;
 
-  DataVis* vis = new OpenMPVis(width,height);
+  DataVis* vis = new PThreadVis(2, width,height);
 
   /* 3. All users must inform the viewer of their DataVis animation with
      the setAnimation method */

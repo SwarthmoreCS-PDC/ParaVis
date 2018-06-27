@@ -1,7 +1,7 @@
 
 add_library(democpu gradientVis.h gradientVis.cpp)
-add_executable(cpuDemos main.cpp)
-target_link_libraries(cpuDemos democpu ${COMLIBS})
-set_target_properties(cpuDemos PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+add_executable(cpuDemo main.cpp)
+target_link_libraries(cpuDemo democpu ${COMLIBS})
+set_target_properties(cpuDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY
   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
 )
