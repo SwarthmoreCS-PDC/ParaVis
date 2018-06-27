@@ -69,15 +69,8 @@ add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
-set(CPUDEMO_HDRS
-  gradientVis.h
-)
-set(CPUDEMO_SRC
-  gradientVis.cpp
-)
-add_library(democpu ${CPUDEMO_HDRS} ${CPUDEMO_SRC})
-ADD_EXECUTABLE(cpuDemos main.cpp)
-TARGET_LINK_LIBRARIES(cpuDemos democpu ${COMLIBS})
+
+add_subdirectory(demos)
 
 #get symlink_data macro
 include(${CMAKE_SOURCE_DIR}/cmake_modules/helpers.cmake)
@@ -145,4 +138,19 @@ if(CMAKE_USE_PTHREADS_INIT)
   if(APPLE)
   TARGET_LINK_LIBRARIES(threadDemos osxbarrier)
   endif()
+endif()
+
+FIND_PACKAGe(OpenMP)
+if(OpenMP_FOUND OR OPENMP_FOUND)
+    set(OPENMP_DEMO_HDRS
+    openmpVis.h
+  )
+  set(OPENMP_DEMO_SRC
+    openmpVis.cpp
+  )
+  SET(CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+  add_library(demoopenmp ${OPENMP_DEMO_HDRS} ${OPENMP_DEMO_SRC})
+  ADD_EXECUTABLE(openmpDemos openmpDemos.cpp)
+  TARGET_LINK_LIBRARIES(openmpDemos demoopenmp ${COMLIBS})
 endif()
