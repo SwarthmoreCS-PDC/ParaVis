@@ -21,6 +21,12 @@ include_directories(
   ${Qt5Multimedia_INCLUDE_DIRS})
 
 
+add_library(inclib INTERFACE)
+target_include_directories(inclib INTERFACE
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
 add_subdirectory(common)
 
 set(UTIL_HEADERS
@@ -38,9 +44,8 @@ set(UTIL_SRC
 
 
 add_library(myutil ${UTIL_HEADERS} ${UTIL_SRC})
-target_include_directories(myutil PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include> )
+target_link_libraries(myutil PUBLIC inclib)
+
 
 
 #QT headers requiring MOC (meta object compiler)
@@ -72,17 +77,15 @@ set(SHDRS
 )
 
 add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
-target_include_directories(myvis PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include> )
+target_link_libraries(myvis PUBLIC inclib)
+
 
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
+#add_subdirectory(src)
 add_subdirectory(shaders)
 add_subdirectory(demos)
-
-
 
 #for CUDA
 FIND_PACKAGE(CUDA QUIET)
@@ -100,9 +103,7 @@ endif()
 
 if (CUDA_FOUND)
   add_library(cudaqt dataVisCUDA.cpp include/dataVisCUDA.h ${UTIL_HEADERS})
-  target_include_directories(cudaqt PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include> )
+  target_link_libraries(cudaqt PUBLIC inclib)
 
   set(GPU_UTIL_HEADERS
     include/handle_cuda_error.h
