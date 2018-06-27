@@ -1,7 +1,6 @@
 #include "pthreadVis.h"
 #include <pthread.h>
 #include <iostream>
-//pthread_barrier_t barrier;
 
 void *threadUpdate(void* info){
   threadInfo* tinfo = (threadInfo*) info;
