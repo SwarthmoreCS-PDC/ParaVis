@@ -69,12 +69,10 @@ add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
-
+add_subdirectory(shaders)
 add_subdirectory(demos)
 
-#get symlink_data macro
-include(${CMAKE_SOURCE_DIR}/cmake_modules/helpers.cmake)
-symlink_data(shaders *.glsl)
+
 
 #for CUDA
 FIND_PACKAGE(CUDA QUIET)
