@@ -1,4 +1,4 @@
-#include "square.h"
+#include "common/square.h"
 #include <iostream>
 
 using namespace cs40;

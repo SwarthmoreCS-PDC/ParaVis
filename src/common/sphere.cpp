@@ -1,4 +1,4 @@
-#include "sphere.h"
+#include "common/sphere.h"
 #include <iostream>
 
 using namespace cs40;

@@ -27,8 +27,6 @@ target_include_directories(inclib INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-add_subdirectory(common)
-
 set(UTIL_HEADERS
   include/timerBase.h
   include/timerCPU.h
@@ -83,8 +81,7 @@ target_link_libraries(myvis PUBLIC inclib)
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
-#add_subdirectory(src)
-add_subdirectory(shaders)
+add_subdirectory(src)
 add_subdirectory(demos)
 
 #for CUDA
@@ -126,14 +123,14 @@ endif()
 FIND_PACKAGE(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
   if(APPLE)
-    add_subdirectory(osx)
+    add_subdirectory(src/osx)
   endif()
   add_subdirectory(demos/pthreads)
 endif()
 
 find_package(OpenMP)
 #TODO: Apple support for openMP is weird
-#port install libomp, manually set OpenMP_CXX_FLAGS/LIB_NAMES 
+#port install libomp, manually set OpenMP_CXX_FLAGS/LIB_NAMES
 if(OpenMP_FOUND OR OPENMP_FOUND)
   if(NOT TARGET OpenMP::OpenMP_CXX)
       add_library(OpenMP_TARGET INTERFACE)
