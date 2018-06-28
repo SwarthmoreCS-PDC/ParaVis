@@ -1,4 +1,3 @@
-
 #Add user generated files here and name of executable
 add_executable(cpuDemo main.cpp gradientVis.h gradientVis.cpp)
 

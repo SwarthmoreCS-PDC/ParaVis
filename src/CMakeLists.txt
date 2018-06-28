@@ -20,5 +20,6 @@ target_sources(qtvis
     include/mypanelopengl.h
 )
 set_target_properties(qtvis PROPERTIES
-AUTOMOC ON
-AUTOUIC ON)
+  AUTOMOC ON
+  AUTOUIC ON
+)

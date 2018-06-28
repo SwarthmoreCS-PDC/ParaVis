@@ -39,6 +39,7 @@ add_subdirectory(demos)
 #for CUDA
 FIND_PACKAGE(CUDA QUIET)
 if(CUDA_FOUND)
+  #TODO: port to new CUDA CMake arch? get rid set cuda_ functions
   cuda_include_directories(${CUDA_INC} ${CMAKE_SOURCE_DIR}/include)
   set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --std=c++11 -g)
   link_directories(${CUDA_SDK}/lib/)

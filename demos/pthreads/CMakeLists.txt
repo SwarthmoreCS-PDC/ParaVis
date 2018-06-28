@@ -1,5 +1,3 @@
-
-
 add_executable(threadDemo threadDemo.cpp pthreadVis.h pthreadVis.cpp)
 target_link_libraries(threadDemo qtvis)
 
