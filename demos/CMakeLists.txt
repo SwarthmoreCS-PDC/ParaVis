@@ -1,9 +1,11 @@
 
-add_library(democpu gradientVis.h gradientVis.cpp)
-target_link_libraries(democpu PUBLIC inclib Qt5::Core)
+#Add user generated files here and name of executable
+add_executable(cpuDemo main.cpp gradientVis.h gradientVis.cpp)
 
-add_executable(cpuDemo main.cpp)
-target_link_libraries(cpuDemo democpu qtvis)
-set_target_properties(cpuDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+#Link executable to vis library
+target_link_libraries(cpuDemo qtvis)
+
+#Drop demo into top level build folder
+set_target_properties(cpuDemo PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
 )
