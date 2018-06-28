@@ -1,86 +1,34 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.11)
 
-FIND_PACKAGE(OpenGL REQUIRED)  #Graphics API
-
+#Graphics API
+FIND_PACKAGE(OpenGL REQUIRED)
 
 #for QT Window widgets
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5Gui REQUIRED)
 FIND_PACKAGE(Qt5OpenGL REQUIRED)
 
-#required CMake options for QT Apps
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(./)
-set(CMAKE_CXX_FLAGS "--std=c++11 -g -Wall")
-ADD_DEFINITIONS(${Qt5Widgets_DEFINITIONS})
-SET(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-include_directories(
-  ${Qt5Widgets_INCLUDE_DIRS}
-  ${Qt5OpenGL_INCLUDE_DIRS}
-  ${Qt5Multimedia_INCLUDE_DIRS})
-
-
+#link this interface library to any target needing to find include path
 add_library(inclib INTERFACE)
-target_include_directories(inclib INTERFACE
+target_include_directories(inclib
+  INTERFACE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-
-set(UTIL_HEADERS
-  include/timerBase.h
-  include/timerCPU.h
-  include/dataVis.h
-  include/dataVisCPU.h
-  )
-
-set(UTIL_SRC
-  timerCPU.cpp
-  dataVis.cpp
-  dataVisCPU.cpp
-  )
-
-
-add_library(myutil ${UTIL_HEADERS} ${UTIL_SRC})
-target_link_libraries(myutil PUBLIC inclib)
-
-
-
-#QT headers requiring MOC (meta object compiler)
-set(QTHDRS
-  include/mainwindow.h
-  include/mypanelopengl.h
-  )
-
-#window design files
-set(QTFORMS mainwindow.ui)
-
-#Run qt tools to auto generate C++ compatible files
-QT5_WRAP_CPP(QTHDRS_MOC ${QTHDRS})
-QT5_WRAP_UI(QTFORMS_HDRS ${QTFORMS})
-SET(MYQTFILES ${QTHDRS_MOC} ${QTFORMS_HDRS})
-
-#normal source files
-set(SRC
-  mainwindow.cpp
-  mypanelopengl.cpp
-  qtViewer.cpp
+target_compile_features(inclib
+  INTERFACE
+    cxx_nullptr
+)
+target_link_libraries(inclib
+  INTERFACE
+   Qt5::OpenGL
 )
 
-set(SHDRS
-  include/qtViewer.h
-  include/qoglHelper.h
-  include/color3.h
-  include/imageBuffer.h
-)
-
-add_library(myvis ${SRC} ${SHDRS} ${MYQTFILES})
-target_link_libraries(myvis PUBLIC inclib)
-
-
+#TODO: make this more CMake 3 friendly
 set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
 Qt5::Core Qt5::Gui Qt5::OpenGL)
 
+#Primary library and demos
 add_subdirectory(src)
 add_subdirectory(demos)
 
@@ -88,6 +36,7 @@ add_subdirectory(demos)
 FIND_PACKAGE(CUDA QUIET)
 if(CUDA_FOUND)
   cuda_include_directories(${CUDA_INC} ${CMAKE_SOURCE_DIR}/include)
+  set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --std=c++11 -g)
   link_directories(${CUDA_SDK}/lib/)
   # CUDA 8 gets grumpy about deprecated archs
   if (CUDA_VERSION VERSION_GREATER "7.5")
@@ -96,16 +45,20 @@ if(CUDA_FOUND)
     LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})
   endif()
 
+  #CUDA Specific libraries/demos
   add_subdirectory(src/cuda)
   add_subdirectory(demos/cuda)
 endif()
 
-
+#for PThreads
 FIND_PACKAGE(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
+
   if(APPLE)
+    #compile separate libary for pthread_barrier on osx
     add_subdirectory(src/osx)
   endif()
+  #include pthread demos
   add_subdirectory(demos/pthreads)
 endif()
 
@@ -113,6 +66,8 @@ find_package(OpenMP)
 #TODO: Apple support for openMP is weird
 #port install libomp, manually set OpenMP_CXX_FLAGS/LIB_NAMES
 if(OpenMP_FOUND OR OPENMP_FOUND)
+  #Add some boilerplate to make OpenMP support on Cmake 3.1 look more
+  #like CMake 3.7+
   if(NOT TARGET OpenMP::OpenMP_CXX)
       add_library(OpenMP_TARGET INTERFACE)
       add_library(OpenMP::OpenMP_CXX ALIAS OpenMP_TARGET)
@@ -121,5 +76,6 @@ if(OpenMP_FOUND OR OPENMP_FOUND)
       target_link_libraries(OpenMP_TARGET INTERFACE Threads::Threads)
       target_link_libraries(OpenMP_TARGET INTERFACE ${OpenMP_CXX_FLAGS})
   endif()
+  #include openmp demos
   add_subdirectory(demos/openMP)
 endif()
