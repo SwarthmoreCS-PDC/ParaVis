@@ -131,7 +131,17 @@ if(CMAKE_USE_PTHREADS_INIT)
   add_subdirectory(demos/pthreads)
 endif()
 
-FIND_PACKAGe(OpenMP)
+find_package(OpenMP)
+#TODO: Apple support for openMP is weird
+#port install libomp, manually set OpenMP_CXX_FLAGS/LIB_NAMES 
 if(OpenMP_FOUND OR OPENMP_FOUND)
+  if(NOT TARGET OpenMP::OpenMP_CXX)
+      add_library(OpenMP_TARGET INTERFACE)
+      add_library(OpenMP::OpenMP_CXX ALIAS OpenMP_TARGET)
+      target_compile_options(OpenMP_TARGET INTERFACE ${OpenMP_CXX_FLAGS})
+      find_package(Threads REQUIRED)
+      target_link_libraries(OpenMP_TARGET INTERFACE Threads::Threads)
+      target_link_libraries(OpenMP_TARGET INTERFACE ${OpenMP_CXX_FLAGS})
+  endif()
   add_subdirectory(demos/openMP)
 endif()
