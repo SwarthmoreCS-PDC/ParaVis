@@ -94,31 +94,12 @@ if(CUDA_FOUND)
     #CMake 3.7+
     CUDA_SELECT_NVCC_ARCH_FLAGS(ARCH_FLAGS Auto)
     LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})
-    #LIST(APPEND CUDA_NVCC_FLAGS "-arch=sm_30")
   endif()
-endif()
 
-if (CUDA_FOUND)
-  add_library(cudaqt dataVisCUDA.cpp include/dataVisCUDA.h ${UTIL_HEADERS})
-  target_link_libraries(cudaqt PUBLIC inclib)
-
-  set(GPU_UTIL_HEADERS
-    include/handle_cuda_error.h
-    include/timerBase.h include/timerGPU.h
-    include/dataVis.h
-    include/cudaWrapper.h
-    include/dataVisCUDA.h
-    )
-
-  set(GPU_UTIL_SRC
-    handle_cuda_error.cu
-    timerGPU.cu
-    cudaWrapper.cu
-    )
-
-  cuda_add_library(mycudautil ${GPU_UTIL_HEADERS} ${GPU_UTIL_SRC})
+  add_subdirectory(src/cuda)
   add_subdirectory(demos/cuda)
 endif()
+
 
 FIND_PACKAGE(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
