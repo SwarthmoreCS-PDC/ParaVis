@@ -5,7 +5,7 @@ target_link_libraries(demothread PUBLIC inclib)
 add_executable(threadDemo threadDemo.cpp)
 target_link_libraries(threadDemo
   PRIVATE
-     demothread ${COMLIBS} Threads::Threads
+     demothread qtvis Threads::Threads
 )
 if(APPLE)
  target_link_libraries(threadDemo PRIVATE osxbarrier)

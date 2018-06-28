@@ -1,2 +1,4 @@
-add_library(osxbarrier pthread_barrier.c)
-target_link_libraries(osxbarrier PUBLIC inclib)
+target_sources(qtvis
+   PRIVATE
+    src/osx/pthread_barrier.c
+)

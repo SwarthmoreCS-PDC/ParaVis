@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 
+#TODO: where does wall , -g go now?
+#set(CMAKE_CXX_FLAGS "--std=c++11 -g -Wall")
+
 #Graphics API
 FIND_PACKAGE(OpenGL REQUIRED)
 
@@ -22,11 +25,12 @@ target_compile_features(inclib
 target_link_libraries(inclib
   INTERFACE
    Qt5::OpenGL
+   OpenGL::GL
 )
 
-#TODO: make this more CMake 3 friendly
-set(COMLIBS myvis myutil shapes ${OPENGL_LIBRARY}
-Qt5::Core Qt5::Gui Qt5::OpenGL)
+#The primary libary. Sources can be added incrementally
+add_library(qtvis "")
+target_link_libraries(qtvis PUBLIC inclib)
 
 #Primary library and demos
 add_subdirectory(src)
@@ -47,13 +51,14 @@ if(CUDA_FOUND)
 
   #CUDA Specific libraries/demos
   add_subdirectory(src/cuda)
+  target_link_libraries(qtvis PUBLIC mycudautil)
   add_subdirectory(demos/cuda)
 endif()
 
 #for PThreads
 FIND_PACKAGE(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
-
+  target_link_libraries(qtvis INTERFACE Threads::Threads)
   if(APPLE)
     #compile separate libary for pthread_barrier on osx
     add_subdirectory(src/osx)
@@ -77,5 +82,6 @@ if(OpenMP_FOUND OR OPENMP_FOUND)
       target_link_libraries(OpenMP_TARGET INTERFACE ${OpenMP_CXX_FLAGS})
   endif()
   #include openmp demos
+  target_link_libraries(qtvis INTERFACE OpenMP::OpenMP_CXX)
   add_subdirectory(demos/openMP)
 endif()

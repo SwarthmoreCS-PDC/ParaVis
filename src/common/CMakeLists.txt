@@ -1,2 +1,7 @@
-add_library(shapes sphere.cpp square.cpp cylinder.cpp matrixstack.cpp)
-target_link_libraries(shapes PUBLIC inclib Qt5::Core)
+target_sources(qtvis
+   PRIVATE
+    src/common/sphere.cpp
+    src/common/square.cpp
+    src/common/cylinder.cpp
+    src/common/matrixstack.cpp
+)
