@@ -5,7 +5,10 @@ mkdir build
 cd build
 cmake ..
 make -j8
-./cudaDemos
+./cudaDemo
+./cpuDemo
+./openMPDemo
+./threadDemo
 ```
 
 # Adding a new CUDA Animation
