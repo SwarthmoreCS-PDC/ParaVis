@@ -1,5 +1,5 @@
 #Add user generated files here and name of executable
-add_executable(cpuDemo main.cpp gradientVis.h gradientVis.cpp)
+add_executable(cpuDemo main.cpp gradientVis.cpp)
 
 #Link executable to vis library
 target_link_libraries(cpuDemo qtvis compile_info)
