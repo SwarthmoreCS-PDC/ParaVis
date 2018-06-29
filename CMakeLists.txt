@@ -52,6 +52,7 @@ if(CMAKE_CUDA_COMPILER)
   #CUDA Specific libraries/demos
   #Build a separate qtviscuda library that only needs
   #to be linked into cuda applications
+  include(${CMAKE_SOURCE_DIR}/cmake_modules/detectCUDAarch.cmake)
   add_subdirectory(src/cuda)
   #Sample cuda demos linking qtvis and qtviscuda
   add_subdirectory(demos/cuda)
