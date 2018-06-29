@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 project(qtParallelVis LANGUAGES CXX)
-#TODO: where does wall , -g go now?
-#set(CMAKE_CXX_FLAGS "--std=c++11 -g -Wall")
+
+#to switch betweeen release/debug builds
+#cmake -DCMAKE_BUILD_TYPE=<Release/Debug/RelWithDebInfo/MinSizeRel> ..
 
 #Graphics API
 FIND_PACKAGE(OpenGL REQUIRED)
@@ -12,21 +13,33 @@ FIND_PACKAGE(Qt5Gui REQUIRED)
 FIND_PACKAGE(Qt5OpenGL REQUIRED)
 
 #link this interface library to any target needing to find include path
-add_library(inclib INTERFACE)
-target_include_directories(inclib
+add_library(compile_info INTERFACE)
+target_include_directories(compile_info
   INTERFACE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_compile_features(inclib
+target_compile_features(compile_info
   INTERFACE
     cxx_nullptr
+)
+set(cxx_lang "$<COMPILE_LANGUAGE:CXX>")
+set(cuda_lang "$<COMPILE_LANGUAGE:CUDA>")
+set(debug_cxx_lang "$<AND:$<CONFIG:DEBUG>,${cxx_lang}>")
+set(debug_cuda_lang "$<AND:$<CONFIG:DEBUG>,${cuda_lang}>")
+target_compile_options(compile_info INTERFACE
+  $<${cxx_lang}:$<BUILD_INTERFACE:-Wall>>
+  $<${cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wall>>
+  $<${debug_cxx_lang}:$<BUILD_INTERFACE:-Wunused-parameter>>
+  $<${debug_cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wunused-parameter>>
 )
 
 
 #The primary libary. Sources can be added incrementally
 add_library(qtvis "")
-target_link_libraries(qtvis PUBLIC inclib Qt5::OpenGL OpenGL::GL)
+target_link_libraries(qtvis
+  PUBLIC Qt5::OpenGL OpenGL::GL
+  PRIVATE compile_info)
 
 #Primary library and demos
 add_subdirectory(src)
@@ -47,6 +60,7 @@ else()
   "Could not find CUDA, set CMAKE_CUDA_COMPILER to full path to nvcc if you think this is an error")
   #Optionally, add path to nvcc to PATH env variable
 endif()
+
 
 #[[
 #not used in favor of new Cmake3 CUDA support

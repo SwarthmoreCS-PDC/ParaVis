@@ -18,4 +18,4 @@ target_sources(qtviscuda PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/timerGPU.cu
   ${CMAKE_CURRENT_LIST_DIR}/cudaWrapper.cu
 )
-target_link_libraries(qtviscuda PUBLIC inclib)
+target_link_libraries(qtviscuda PRIVATE compile_info)
