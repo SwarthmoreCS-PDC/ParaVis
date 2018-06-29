@@ -22,15 +22,11 @@ target_compile_features(inclib
   INTERFACE
     cxx_nullptr
 )
-target_link_libraries(inclib
-  INTERFACE
-   Qt5::OpenGL
-   OpenGL::GL
-)
+
 
 #The primary libary. Sources can be added incrementally
 add_library(qtvis "")
-target_link_libraries(qtvis PUBLIC inclib)
+target_link_libraries(qtvis PUBLIC inclib Qt5::OpenGL OpenGL::GL)
 
 #Primary library and demos
 add_subdirectory(src)
@@ -40,15 +36,23 @@ include(CheckLanguage)
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
   enable_language(CUDA)
+  #CUDA Specific libraries/demos
+  #Build a separate qtviscuda library that only needs
+  #to be linked into cuda applications
+  add_subdirectory(src/cuda)
+  #Sample cuda demos linking qtvis and qtviscuda
+  add_subdirectory(demos/cuda)
 else()
   message(STATUS
   "Could not find CUDA, set CMAKE_CUDA_COMPILER to full path to nvcc if you think this is an error")
   #Optionally, add path to nvcc to PATH env variable
 endif()
 
+#[[
+#not used in favor of new Cmake3 CUDA support
+#TODO: setting arch flags??
 FIND_PACKAGE(CUDA QUIET)
 if(CUDA_FOUND)
-  #TODO: port to new CUDA CMake arch? get rid set cuda_ functions
   cuda_include_directories(${CUDA_INC} ${CMAKE_SOURCE_DIR}/include)
   set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --std=c++11 -g)
   link_directories(${CUDA_SDK}/lib/)
@@ -64,6 +68,7 @@ if(CUDA_FOUND)
   target_link_libraries(qtvis INTERFACE mycudautil)
   add_subdirectory(demos/cuda)
 endif()
+]]
 
 #for PThreads
 FIND_PACKAGE(Threads)

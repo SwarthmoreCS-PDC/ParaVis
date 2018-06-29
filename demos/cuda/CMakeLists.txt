@@ -1,11 +1,12 @@
-cuda_add_library(cudademos
+add_library(cudademos
   juliaKernel.h rippleKernel.h userBufferKernel.h
   juliaKernel.cu rippleKernel.cu userBufferKernel.cu
 )
+target_link_libraries(cudademos PUBLIC inclib)
 
 add_executable(cudaDemo cudaDemo.cpp)
 
-target_link_libraries(cudaDemo cudademos qtvis)
+target_link_libraries(cudaDemo cudademos qtvis qtviscuda)
 set_target_properties(cudaDemo PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
 )
