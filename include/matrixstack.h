@@ -3,7 +3,6 @@
 #include <QMatrix4x4>
 #include <QVector3D>
 
-namespace cs40 {
 
 class MatrixStack {
 public:
@@ -57,5 +56,3 @@ public:
 private:
   QList<QMatrix4x4> m_stack;
 };
-
-} // namespace

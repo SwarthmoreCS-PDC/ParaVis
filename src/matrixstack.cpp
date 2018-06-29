@@ -1,6 +1,4 @@
-#include "common/matrixstack.h"
-
-using namespace cs40;
+#include "matrixstack.h"
 
 MatrixStack::MatrixStack() { m_stack.append(QMatrix4x4()); }
 

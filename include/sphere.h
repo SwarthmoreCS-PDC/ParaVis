@@ -1,29 +1,23 @@
 #pragma once
 
-#include <QtCore>
 #include <QtOpenGL>
 #include <cmath>
 
-namespace cs40 {
-
-class Cylinder {
-
+class Sphere {
   typedef QVector2D vec2;
   typedef QVector3D vec3;
   typedef QVector4D vec4;
-
 public:
-  /* construct a Cylinder centered at origin with given radius
-               * and height (along +y axis)
+  /* construct a sphere centered at origin with given radius
                * by dividing it into vertical slices and horizontal stacks */
-  Cylinder(float radius, float height, int slices, int stacks);
+  Sphere(float radius, int slices, int stacks);
 
-  ~Cylinder();
+  ~Sphere();
 
   /* draw the sphere using provided shader program  */
-  void draw(QOpenGLShaderProgram *prog);
+  void draw(QOpenGLShaderProgram *prog, bool points = false);
 
-  /* Set Ambient and Diffuse color of Cylinder */
+  /* Set Ambient and Diffuse color of Sphere */
   inline void setColor(const vec3 &color) {
     m_color = color;
     m_color.setW(1.);
@@ -44,17 +38,17 @@ private:
    * Return true if generate was a success, false otherwise
    */
   bool initVBO();
+  /* setUp VAO once on firstDraw */
+  void setupVAO(QOpenGLShaderProgram *prog);
 
 protected:
   vec4 m_color;
   vec4 m_spec_color;
   QOpenGLBuffer *m_vbo;
   QOpenGLVertexArrayObject *m_vao;
+  bool m_firstDraw;
   float m_radius;
-  float m_height;
   int m_slices;
   int m_stacks;
   int m_stripsize; // num vertices per horizontal strip;
 };
-
-} // namespace

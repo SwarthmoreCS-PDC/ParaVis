@@ -1,7 +1,6 @@
-#include "common/sphere.h"
+#include "sphere.h"
 #include <iostream>
 
-using namespace cs40;
 using std::cout;
 using std::endl;
 

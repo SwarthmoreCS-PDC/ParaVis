@@ -8,13 +8,8 @@
    need to modify/understand this class
 */
 
-/* Needed to get some OpenGL function
- * names through QT5. Oh, QT5. */
-/* TODO:  is this needed anymore? On OSX maybe? */
-//#define GL_GLEXT_PROTOTYPES
-
-#include "common/sphere.h"
-#include "common/square.h"
+#include "sphere.h"
+#include "square.h"
 #include "dataVis.h"
 #include <QKeyEvent>
 #include <QMatrix4x4>
@@ -26,7 +21,7 @@ typedef QVector4D color4;
 typedef QVector3D vec3;
 typedef QMatrix4x4 mat4;
 
-#define CS40_NUM_PROGS 1
+#define NUM_PROGS 1
 class MyPanelOpenGL : public QOpenGLWidget {
   Q_OBJECT
 
@@ -44,8 +39,8 @@ public:
 private:
 
   /* simple test shapes */
-  cs40::Sphere *m_sphere;
-  cs40::Square *m_square;
+  Sphere *m_sphere;
+  Square *m_square;
 
   /* display geometry as  0 : points,  1 : lines, 2 : polygons */
   int m_polymode;
@@ -75,9 +70,9 @@ private:
   mat4 m_projection;
 
   /* Shaders and programs */
-  QOpenGLShader *m_vertexShaders[CS40_NUM_PROGS];
-  QOpenGLShader *m_fragmentShaders[CS40_NUM_PROGS];
-  QOpenGLShaderProgram *m_shaderPrograms[CS40_NUM_PROGS];
+  QOpenGLShader *m_vertexShaders[NUM_PROGS];
+  QOpenGLShader *m_fragmentShaders[NUM_PROGS];
+  QOpenGLShaderProgram *m_shaderPrograms[NUM_PROGS];
   int m_curr_prog; // current program ID
 
   // Make sure right texture is set based on m_tex_map

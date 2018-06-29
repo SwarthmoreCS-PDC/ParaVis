@@ -1,7 +1,6 @@
-#include "common/square.h"
+#include "square.h"
 #include <iostream>
 
-using namespace cs40;
 using std::cout;
 using std::endl;
 

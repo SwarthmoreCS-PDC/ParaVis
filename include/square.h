@@ -4,7 +4,6 @@
 #include <QtOpenGL>
 #include <cmath>
 
-namespace cs40 {
 
 class Square {
   typedef QVector2D vec2;
@@ -53,5 +52,3 @@ protected:
   float m_width;
   bool m_firstDraw;
 };
-
-} // namespace

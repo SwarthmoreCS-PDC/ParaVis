@@ -4,13 +4,11 @@
 
 using std::cout;
 using std::endl;
-using cs40::Sphere;
-using cs40::Square;
 
 MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
     : QOpenGLWidget(parent), m_angles(0., 0., 0.) {
 
-  for (int i = 0; i < CS40_NUM_PROGS; i++) {
+  for (int i = 0; i < NUM_PROGS; i++) {
     m_shaderPrograms[i] = nullptr;
     m_vertexShaders[i] = nullptr;
     m_fragmentShaders[i] = nullptr;
@@ -104,7 +102,7 @@ void MyPanelOpenGL::paintGL() {
   m_shaderPrograms[m_curr_prog]->setUniformValue("Tex0", 0);
   m_shaderPrograms[m_curr_prog]->setUniformValue("Tex1", 1);
   m_shaderPrograms[m_curr_prog]->setUniformValue(
-      "lightPos", vec4(1.5, 0, 2, 1.)); // in world coordinates
+      "lightPos", QVector4D(1.5, 0, 2, 1.)); // in world coordinates
 
   if (m_drawSphere) {
     m_sphere->draw(m_shaderPrograms[m_curr_prog]);
@@ -161,7 +159,7 @@ void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
     setTexture();
     break;
   case Qt::Key_V:
-    m_curr_prog = (m_curr_prog + 1) % CS40_NUM_PROGS;
+    m_curr_prog = (m_curr_prog + 1) % NUM_PROGS;
     break;
   default:
     QWidget::keyPressEvent(event); /* pass to base class */
