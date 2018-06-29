@@ -1,3 +1,4 @@
+#A C++ file that needs the cuda.h header, but not the CUDA compiler
 target_sources(qtvis
    PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/dataVisCUDA.cpp

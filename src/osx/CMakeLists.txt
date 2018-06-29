@@ -1,4 +1,4 @@
 target_sources(qtvis
    PRIVATE
-    src/osx/pthread_barrier.c
+    ${CMAKE_CURRENT_LIST_DIR}/pthread_barrier.c
 )

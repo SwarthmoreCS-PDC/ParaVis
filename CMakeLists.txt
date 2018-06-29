@@ -42,6 +42,7 @@ target_link_libraries(qtvis
   PRIVATE compile_info)
 
 #Primary library and demos
+add_subdirectory(include)
 add_subdirectory(src)
 
 #for CUDA

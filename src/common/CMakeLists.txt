@@ -1,7 +1,7 @@
 target_sources(qtvis
    PRIVATE
-    src/common/sphere.cpp
-    src/common/square.cpp
-    src/common/cylinder.cpp
-    src/common/matrixstack.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/sphere.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/square.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cylinder.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/matrixstack.cpp
 )
