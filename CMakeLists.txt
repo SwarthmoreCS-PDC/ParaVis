@@ -49,10 +49,14 @@ include(CheckLanguage)
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
   enable_language(CUDA)
+  #Autodetect CUDA architecture
+  include(${CMAKE_SOURCE_DIR}/cmake_modules/detectCUDAarch.cmake)
+  target_compile_options(compile_info INTERFACE
+      $<${cuda_lang}:$<BUILD_INTERFACE:${QVis_CUDA_ARCH}>>
+  )
   #CUDA Specific libraries/demos
   #Build a separate qtviscuda library that only needs
   #to be linked into cuda applications
-  include(${CMAKE_SOURCE_DIR}/cmake_modules/detectCUDAarch.cmake)
   add_subdirectory(src/cuda)
   #Sample cuda demos linking qtvis and qtviscuda
   add_subdirectory(demos/cuda)
