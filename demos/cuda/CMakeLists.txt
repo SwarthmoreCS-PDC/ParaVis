@@ -6,6 +6,6 @@ cuda_add_library(cudademos
 add_executable(cudaDemo cudaDemo.cpp)
 
 target_link_libraries(cudaDemo cudademos qtvis)
-set_target_properties(cudaDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+set_target_properties(cudaDemo PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
 )

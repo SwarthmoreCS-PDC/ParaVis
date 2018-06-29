@@ -5,6 +5,6 @@ target_sources(openMPDemo
 )
 target_link_libraries(openMPDemo qtvis)
 
-set_target_properties(openMPDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+set_target_properties(openMPDemo PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
 )

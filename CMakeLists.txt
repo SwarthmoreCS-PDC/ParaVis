@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-
+project(qtParallelVis LANGUAGES CXX)
 #TODO: where does wall , -g go now?
 #set(CMAKE_CXX_FLAGS "--std=c++11 -g -Wall")
 
@@ -34,9 +34,18 @@ target_link_libraries(qtvis PUBLIC inclib)
 
 #Primary library and demos
 add_subdirectory(src)
-add_subdirectory(demos)
 
 #for CUDA
+include(CheckLanguage)
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+  enable_language(CUDA)
+else()
+  message(STATUS
+  "Could not find CUDA, set CMAKE_CUDA_COMPILER to full path to nvcc if you think this is an error")
+  #Optionally, add path to nvcc to PATH env variable
+endif()
+
 FIND_PACKAGE(CUDA QUIET)
 if(CUDA_FOUND)
   #TODO: port to new CUDA CMake arch? get rid set cuda_ functions
@@ -52,7 +61,7 @@ if(CUDA_FOUND)
 
   #CUDA Specific libraries/demos
   add_subdirectory(src/cuda)
-  target_link_libraries(qtvis PUBLIC mycudautil)
+  target_link_libraries(qtvis INTERFACE mycudautil)
   add_subdirectory(demos/cuda)
 endif()
 
@@ -86,3 +95,5 @@ if(OpenMP_FOUND OR OPENMP_FOUND)
   target_link_libraries(qtvis INTERFACE OpenMP::OpenMP_CXX)
   add_subdirectory(demos/openMP)
 endif()
+
+add_subdirectory(demos)
