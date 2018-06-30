@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
-project(qtParallelVis LANGUAGES CXX)
+
+#CXX used for most of project, C for OSX pthread extensions
+project(qtParallelVis LANGUAGES CXX C)
 
 #to switch betweeen release/debug builds
 #cmake -DCMAKE_BUILD_TYPE=<Release/Debug/RelWithDebInfo/MinSizeRel> ..
@@ -24,14 +26,10 @@ target_compile_features(compile_info
     cxx_nullptr
 )
 set(cxx_lang "$<COMPILE_LANGUAGE:CXX>")
-set(cuda_lang "$<COMPILE_LANGUAGE:CUDA>")
 set(debug_cxx_lang "$<AND:$<CONFIG:DEBUG>,${cxx_lang}>")
-set(debug_cuda_lang "$<AND:$<CONFIG:DEBUG>,${cuda_lang}>")
 target_compile_options(compile_info INTERFACE
   $<${cxx_lang}:$<BUILD_INTERFACE:-Wall>>
-  $<${cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wall>>
   $<${debug_cxx_lang}:$<BUILD_INTERFACE:-Wunused-parameter>>
-  $<${debug_cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wunused-parameter>>
 )
 
 
@@ -52,9 +50,16 @@ if(CMAKE_CUDA_COMPILER)
   enable_language(CUDA)
   #Autodetect CUDA architecture
   include(${CMAKE_SOURCE_DIR}/cmake_modules/detectCUDAarch.cmake)
+  set(cuda_lang "$<COMPILE_LANGUAGE:CUDA>")
+  set(debug_cuda_lang "$<AND:$<CONFIG:DEBUG>,${cuda_lang}>")
+  target_compile_options(compile_info INTERFACE
+    $<${cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wall>>
+    $<${debug_cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wunused-parameter>>
+  )
   target_compile_options(compile_info INTERFACE
       $<${cuda_lang}:$<BUILD_INTERFACE:${QVis_CUDA_ARCH}>>
   )
+
   #CUDA Specific libraries/demos
   #Build a separate qtviscuda library that only needs
   #to be linked into cuda applications
