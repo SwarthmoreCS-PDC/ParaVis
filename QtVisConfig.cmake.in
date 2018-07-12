@@ -1,0 +1,5 @@
+set(QTVIS_VERSION 0.1)
+
+@PACKAGE_INIT@
+
+check_required_components(QtVis)

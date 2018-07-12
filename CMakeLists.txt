@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
 #CXX used for most of project, C for OSX pthread extensions
-project(qtParallelVis LANGUAGES CXX C)
+project(qtParallelVis VERSION 0.1 LANGUAGES CXX C )
 
 #to switch betweeen release/debug builds
 #cmake -DCMAKE_BUILD_TYPE=<Release/Debug/RelWithDebInfo/MinSizeRel> ..
@@ -22,7 +22,7 @@ target_include_directories(compile_info
 )
 target_compile_features(compile_info
   INTERFACE
-    cxx_nullptr
+    $<BUILD_INTERFACE:cxx_nullptr>
 )
 set(cxx_lang "$<COMPILE_LANGUAGE:CXX>")
 set(debug_cxx_lang "$<AND:$<CONFIG:DEBUG>,${cxx_lang}>")
@@ -44,6 +44,7 @@ add_subdirectory(src)
 
 include(GNUInstallDirs)
 set(QVIS_INSTALL_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR}/qtvis)
+set(QVIS_PKG_PATH ${CMAKE_INSTALL_LIBDIR}/QtVis/cmake)
 set(QVIS_PERMS644 OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 set(QVIS_PERMS755 OWNER_READ OWNER_WRITE OWNER_EXECUTE
    GROUP_READ GROUP_EXECUTE  WORLD_READ WORLD_EXECUTE)
@@ -54,9 +55,27 @@ install(DIRECTORY include/
 install(FILES ${CMAKE_BINARY_DIR}/qtvis_autogen/include/ui_mainwindow.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtvis
       PERMISSIONS ${QVIS_PERSM644})
-install(TARGETS qtvis ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+install(TARGETS compile_info EXPORT core)
+install(TARGETS qtvis
+  EXPORT core
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PERMISSIONS ${QVIS_PERSM644}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtvis)
+install(EXPORT core
+  NAMESPACE QtVis::
+DESTINATION ${QVIS_PKG_PATH})
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(QtVisConfig.cmake.in
+QtVisConfig.cmake
+INSTALL_DESTINATION ${QVIS_PKG_PATH})
+write_basic_package_version_file("QtVisConfig0.1.cmake"
+COMPATIBILITY SameMajorVersion)
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/QtVisConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/QtVisConfig0.1.cmake
 PERMISSIONS ${QVIS_PERSM644}
-INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtvis)
+DESTINATION ${QVIS_PKG_PATH})
 
 
 #for CUDA
