@@ -19,7 +19,6 @@ add_library(compile_info INTERFACE)
 target_include_directories(compile_info
   INTERFACE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
 )
 target_compile_features(compile_info
   INTERFACE
@@ -42,6 +41,23 @@ target_link_libraries(qtvis
 #Primary library and demos
 add_subdirectory(include)
 add_subdirectory(src)
+
+include(GNUInstallDirs)
+set(QVIS_INSTALL_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR}/qtvis)
+set(QVIS_PERMS644 OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+set(QVIS_PERMS755 OWNER_READ OWNER_WRITE OWNER_EXECUTE
+   GROUP_READ GROUP_EXECUTE  WORLD_READ WORLD_EXECUTE)
+install(DIRECTORY include/
+        DESTINATION ${QVIS_INSTALL_INCLUDE_PATH}
+        FILE_PERMISSIONS ${QVIS_PERMS644}
+      DIRECTORY_PERMISSIONS ${QVIS_PERSM755})
+install(FILES ${CMAKE_BINARY_DIR}/qtvis_autogen/include/ui_mainwindow.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtvis
+      PERMISSIONS ${QVIS_PERSM644})
+install(TARGETS qtvis ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+PERMISSIONS ${QVIS_PERSM644}
+INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtvis)
+
 
 #for CUDA
 include(CheckLanguage)
@@ -68,37 +84,16 @@ if(CMAKE_CUDA_COMPILER)
   add_subdirectory(demos/cuda)
 else()
   message(STATUS
-  "Could not find CUDA, set CMAKE_CUDA_COMPILER to full path to nvcc if you think this is an error")
+  "Could not find CUDA, set CMAKE_CUDA_COMPILER to\n
+   full path to nvcc if you think this is an error")
   #Optionally, add path to nvcc to PATH env variable
 endif()
 
 
-#[[
-#not used in favor of new Cmake3 CUDA support
-#TODO: setting arch flags??
-FIND_PACKAGE(CUDA QUIET)
-if(CUDA_FOUND)
-  cuda_include_directories(${CUDA_INC} ${CMAKE_SOURCE_DIR}/include)
-  set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --std=c++11 -g)
-  link_directories(${CUDA_SDK}/lib/)
-  # CUDA 8 gets grumpy about deprecated archs
-  if (CUDA_VERSION VERSION_GREATER "7.5")
-    #CMake 3.7+
-    CUDA_SELECT_NVCC_ARCH_FLAGS(ARCH_FLAGS Auto)
-    LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})
-  endif()
-
-  #CUDA Specific libraries/demos
-  add_subdirectory(src/cuda)
-  target_link_libraries(qtvis INTERFACE mycudautil)
-  add_subdirectory(demos/cuda)
-endif()
-]]
-
 #for PThreads
-FIND_PACKAGE(Threads)
+find_package(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
-  target_link_libraries(qtvis INTERFACE Threads::Threads)
+  target_link_libraries(qtvis PUBLIC Threads::Threads)
   if(APPLE)
     #compile separate libary for pthread_barrier on osx
     add_subdirectory(src/osx)
@@ -122,7 +117,7 @@ if(OpenMP_FOUND OR OPENMP_FOUND)
       target_link_libraries(OpenMP_TARGET INTERFACE ${OpenMP_CXX_FLAGS})
   endif()
   #include openmp demos
-  target_link_libraries(qtvis INTERFACE OpenMP::OpenMP_CXX)
+  target_link_libraries(qtvis PUBLIC OpenMP::OpenMP_CXX)
   add_subdirectory(demos/openMP)
 endif()
 

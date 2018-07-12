@@ -20,3 +20,5 @@ target_sources(qtviscuda PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/cudaWrapper.cu
 )
 target_link_libraries(qtviscuda PRIVATE compile_info)
+install(TARGETS qtviscuda ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+PERMISSIONS ${QVIS_PERSM644})
