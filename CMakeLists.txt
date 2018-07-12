@@ -65,6 +65,7 @@ install(EXPORT core
   NAMESPACE QtVis::
 DESTINATION ${QVIS_PKG_PATH})
 
+
 include(CMakePackageConfigHelpers)
 configure_package_config_file(QtVisConfig.cmake.in
 QtVisConfig.cmake
@@ -76,7 +77,6 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/QtVisConfig0.1.cmake
 PERMISSIONS ${QVIS_PERSM644}
 DESTINATION ${QVIS_PKG_PATH})
-
 
 #for CUDA
 include(CheckLanguage)

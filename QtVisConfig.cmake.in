@@ -1,5 +1,12 @@
-set(QTVIS_VERSION 0.1)
+set(QTVIS_VERSION @PROJECT_VERSION@)
 
 @PACKAGE_INIT@
 
-check_required_components(QtVis)
+FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5Gui REQUIRED)
+FIND_PACKAGE(Qt5OpenGL REQUIRED)
+find_package(Threads)
+find_package(OpenMP)
+
+include("${CMAKE_CURRENT_LIST_DIR}/core.cmake")
