@@ -6,7 +6,7 @@
 #include <string>
 
 
-QTViewer::QTViewer(int argc, char* argv[], int w, int h, QString title){
+QTViewer::QTViewer(int argc, char* argv[], int w, int h, QString title): m_argc(argc){
   /* OpenGL format must be set before launching application
      This is one spot where we declare we want an OpenGL 4.1
      Core context. Other spots include
@@ -19,7 +19,10 @@ QTViewer::QTViewer(int argc, char* argv[], int w, int h, QString title){
   QSurfaceFormat::setDefaultFormat(format);
 
   /* Create the app, set the title and show the UI */
-  m_app = new QApplication(argc, argv);
+  /* Why m_argc? Warning: The data referred to by argc and argv must stay valid for the entire lifetime of the QApplication object. In addition, argc must be greater than zero and argv must contain at least one valid character string.
+  http://doc.qt.io/qt-5/qapplication.html#QApplication
+  */
+  m_app = new QApplication(m_argc, argv);
   m_window = new MainWindow();
   m_window->setWindowTitle(title);
   m_window->show();

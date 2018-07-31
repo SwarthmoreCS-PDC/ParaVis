@@ -32,5 +32,6 @@ class QTViewer{
 
   private:
      QApplication* m_app;   /* Basic Qt Application */
+     int m_argc;
      MainWindow* m_window;  /* Specific Layout from mainwindow.* */
 };
