@@ -19,8 +19,10 @@ target_sources(qtvis
     ${CMAKE_CURRENT_LIST_DIR}/mypanelopengl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/qtViewer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/mainwindow.ui
+    ${CMAKE_CURRENT_LIST_DIR}/resources.qrc
 )
 set_target_properties(qtvis PROPERTIES
   AUTOMOC ON
   AUTOUIC ON
+  AUTORCC ON
 )

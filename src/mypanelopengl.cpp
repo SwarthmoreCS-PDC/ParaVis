@@ -53,12 +53,13 @@ void MyPanelOpenGL::initializeGL() {
   glEnable(GL_TEXTURE_2D);
   updatePolyMode(m_polymode);
   setCulling(m_cull);
+  Q_INIT_RESOURCE(resources);
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  createShaders(0, "vshader.glsl", "fshader.glsl");
+  createShaders(0, ":/shaders/vshader.glsl", ":/shaders/fshader.glsl");
 
   /* TODO: don't hard code this or make it part of distribution */
-  m_texture = new QOpenGLTexture(QImage("data/earth.png").mirrored());
+  m_texture = new QOpenGLTexture(QImage(":/background.jpg").mirrored());
 
   m_sphere = new Sphere(0.5, 30, 30);
   m_square = new Square(2.);
