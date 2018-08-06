@@ -21,6 +21,7 @@ target_sources(qtvis
     ${CMAKE_CURRENT_LIST_DIR}/mainwindow.ui
     ${CMAKE_CURRENT_LIST_DIR}/resources.qrc
 )
+
 set_target_properties(qtvis PROPERTIES
   AUTOMOC ON
   AUTOUIC ON
