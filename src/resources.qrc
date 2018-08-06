@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="background.jpg">images/corgis.jpg</file>
+    <file>shaders/vshader.glsl</file>
+    <file>shaders/fshader.glsl</file>
+</qresource>
+</RCC>
