@@ -39,3 +39,13 @@ void HandleError(cudaError_t err, const char *file, int line);
       exit(EXIT_FAILURE);                                                      \
     }                                                                          \
   }
+
+/* check error code and print message if not success */
+#define HANDLE_ERROR_MSG(a, msg)                                      \
+  {                                                                   \
+    cudaError_t ret;                                                  \
+    if ((ret=(a)) != cudaSuccess) {                                   \
+      printf(msg);                                                    \
+      printf("error %d\n", ret);                                      \
+    }                                                                 \
+  }
