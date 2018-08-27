@@ -39,6 +39,7 @@ void QTViewer::setAnimation(DataVis* vis){
   m_window->setAnimation(vis);
 }
 
-int QTViewer::run(){
+int QTViewer::run(int maxSteps){
+  m_window->setMaxSteps(maxSteps);
   return m_app->exec();
 }

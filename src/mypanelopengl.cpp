@@ -12,8 +12,11 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
     m_shaderPrograms[i] = nullptr;
     m_vertexShaders[i] = nullptr;
     m_fragmentShaders[i] = nullptr;
+
   }
 
+  m_maxSteps = -1;
+  m_numSteps = 0;
   m_sphere = nullptr;
   m_vis = nullptr;
   m_timer = nullptr;
@@ -44,6 +47,10 @@ MyPanelOpenGL::~MyPanelOpenGL() {
 void MyPanelOpenGL::setAnimation(DataVis* vis){
   m_vis = vis;
   textureReload();
+}
+
+void MyPanelOpenGL::setMaxSteps(int steps){
+  m_maxSteps = steps;
 }
 
 void MyPanelOpenGL::initializeGL() {
@@ -212,7 +219,11 @@ void MyPanelOpenGL::destroyShaders(int i) {
 }
 
 void MyPanelOpenGL::textureReload() {
-  if(m_vis){
+  if(m_vis && (m_maxSteps<0 || m_numSteps<m_maxSteps)){
     m_vis->textureReload();
+    m_numSteps++;
+    if(m_maxSteps==m_numSteps){
+      cout << "Maximum number of steps reached" << endl;
+    }
   }
 }

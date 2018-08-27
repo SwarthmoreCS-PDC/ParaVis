@@ -35,6 +35,7 @@ public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
   void setAnimation(DataVis* vis);
+  void setMaxSteps(int steps);
 
 private:
 
@@ -58,6 +59,11 @@ private:
 
   /* timer that periodically signals to control animation */
   QTimer* m_timer;
+
+  /* maximum number of steps of animation to perform */
+  int m_maxSteps;
+  /* steps of animation performed so far */
+  int m_numSteps;
 
   /* User provided animation texture */
   DataVis* m_vis;

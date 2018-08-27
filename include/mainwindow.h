@@ -25,6 +25,9 @@ public:
      openGL panel */
   void setAnimation(DataVis* vis);
 
+  /* set maximum number of steps in animation */
+  void setMaxSteps(int steps);
+
 private:
   Ui::MainWindow *ui; /* auto-generated ui from mainwindow.ui */
 };

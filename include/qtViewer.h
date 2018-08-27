@@ -27,8 +27,9 @@ class QTViewer{
     void setAnimation(DataVis* vis);
 
     /* Start the animation and event loop for the Viewer
-       Viewer will not return until user quits application */
-    int run();
+       Viewer will not return until user quits application
+       or maxSteps reached if maxSteps is a value >=0  */
+    int run(int maxSteps=-1);
 
   private:
      QApplication* m_app;   /* Basic Qt Application */

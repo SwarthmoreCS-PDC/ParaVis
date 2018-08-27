@@ -14,3 +14,7 @@ void MainWindow::setAnimation(DataVis* vis){
      ui_mainwindow.h file with named objects */
   ui->panelGL->setAnimation(vis);
 }
+
+void MainWindow::setMaxSteps(int steps){
+  ui->panelGL->setMaxSteps(steps);
+}
