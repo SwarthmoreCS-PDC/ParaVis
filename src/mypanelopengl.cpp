@@ -87,7 +87,6 @@ void MyPanelOpenGL::step(){
 }
 
 void MyPanelOpenGL::resizeGL(int w, int h) {
-  cout << "resize " << w << " " << h << endl;
   glViewport(0, 0, w, h);
 }
 

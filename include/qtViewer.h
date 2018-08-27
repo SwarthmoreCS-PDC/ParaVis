@@ -20,7 +20,7 @@ class QTViewer{
        title: Optional title of GUI applicaiton
     */
     QTViewer(int argc, char* argv[],
-        int w=400, int h=400, QString title="Demo");
+        int w=600, int h=500, QString title="Demo");
     ~QTViewer();
 
     /* Connect a user specified visualization to viewer
