@@ -80,16 +80,6 @@ private:
 
   void textureReload(); // run visualization update, reload texture
 
-  /* update Euler angle at index idx by amt
-   * idx=0,1,2 -> x,y,z */
-  void updateAngles(int idx, qreal amt);
-
-  /* update model matrix based on angle */
-  void updateModel();
-
-  /* wrap a angle value to the range 0..360*/
-  qreal wrap(qreal amt);
-
   /* update Polygon draw mode based
    * 0 : point
    * 1 : line

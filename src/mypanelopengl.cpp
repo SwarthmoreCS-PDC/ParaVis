@@ -68,7 +68,6 @@ void MyPanelOpenGL::initializeGL() {
 
   m_projection.perspective(40, 1, 1, 8);
   m_camera.lookAt(vec3(0, 0, 3), vec3(0, 0, 0), vec3(0, 1., 0.));
-  updateModel();
 
   m_timer = new QTimer(this);
   connect(m_timer, SIGNAL(timeout()), this, SLOT(step()));
@@ -117,53 +116,27 @@ void MyPanelOpenGL::paintGL() {
 }
 
 void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
-  qreal step = 1;
   /*Enable strong Focus on GL Widget to process key events*/
+  if( (event->modifiers() & Qt::ControlModifier) &&
+       event->key() == Qt::Key_S){
+    grabFramebuffer().save("snappy.png");
+  }
+  else{
   switch (event->key()) {
   case Qt::Key_Space:
      m_paused=!m_paused;
      break;
-  case Qt::Key_X:
-    if (event->text() == "x") {
-      updateAngles(0, step);
-    } else {
-      updateAngles(0, -step);
-    }
-    break;
-  case Qt::Key_Y:
-    if (event->text() == "y") {
-      updateAngles(1, step);
-    } else {
-      updateAngles(1, -step);
-    }
-    break;
-  case Qt::Key_Z:
-    if (event->text() == "z") {
-      updateAngles(2, step);
-    } else {
-      updateAngles(2, -step);
-    }
-    break;
-  case Qt::Key_C:
-    m_cull=!m_cull;
-    setCulling(m_cull);
-    break;
-  case Qt::Key_P:
-    m_polymode = (m_polymode + 1) % 3;
-    updatePolyMode(m_polymode);
-    break;
-  case Qt::Key_S:
-    m_drawSphere = !m_drawSphere;
-    break;
+  case Qt::Key_Escape:
+     QApplication::quit();
+     break;
   case Qt::Key_T:
     m_tex_map = (m_tex_map + 1) % 2;
     setTexture();
     break;
-  case Qt::Key_V:
-    m_curr_prog = (m_curr_prog + 1) % NUM_PROGS;
-    break;
   default:
     QWidget::keyPressEvent(event); /* pass to base class */
+
+  }
   }
   update();
 }
@@ -174,33 +147,6 @@ void MyPanelOpenGL::setTexture() {
   } else if (m_tex_map == 1 && m_vis) {
     m_vis->bind();
   }
-}
-
-void MyPanelOpenGL::updateAngles(int idx, qreal amt) {
-  if (idx == 0) {
-    m_angles.setX(wrap(m_angles.x() + amt));
-  } else if (idx == 1) {
-    m_angles.setY(wrap(m_angles.y() + amt));
-  } else if (idx == 2) {
-    m_angles.setZ(wrap(m_angles.z() + amt));
-  }
-  updateModel();
-}
-
-void MyPanelOpenGL::updateModel() {
-  m_model.setToIdentity();
-  m_model.rotate(m_angles.z(), vec3(0, 0, 1.));
-  m_model.rotate(m_angles.y(), vec3(0, 1, 0.));
-  m_model.rotate(m_angles.x(), vec3(1, 0, 0.));
-}
-
-qreal MyPanelOpenGL::wrap(qreal amt) {
-  if (amt > 360.) {
-    return amt - 360.;
-  } else if (amt < 0.) {
-    return amt + 360.;
-  }
-  return amt;
 }
 
 void MyPanelOpenGL::updatePolyMode(int val) {
@@ -217,7 +163,6 @@ void MyPanelOpenGL::updatePolyMode(int val) {
     makeCurrent();
     glPolygonMode(GL_FRONT_AND_BACK, mode);
   }
-  // glPolygonMode(GL_BACK,GL_POINT);
 }
 
 void MyPanelOpenGL::setCulling(bool cull){
