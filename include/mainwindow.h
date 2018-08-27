@@ -21,12 +21,8 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  /* connect a user supplied visualization to the
-     openGL panel */
-  void setAnimation(DataVis* vis);
+  MyPanelOpenGL* const getGLWidget();
 
-  /* set maximum number of steps in animation */
-  void setMaxSteps(int steps);
 
 private:
   Ui::MainWindow *ui; /* auto-generated ui from mainwindow.ui */

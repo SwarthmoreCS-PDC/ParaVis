@@ -54,8 +54,6 @@ void MyPanelOpenGL::setMaxSteps(int steps){
 }
 
 void MyPanelOpenGL::initializeGL() {
-
-
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
   updatePolyMode(m_polymode);
@@ -88,7 +86,10 @@ void MyPanelOpenGL::step(){
   }
 }
 
-void MyPanelOpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
+void MyPanelOpenGL::resizeGL(int w, int h) {
+  cout << "resize " << w << " " << h << endl;
+  glViewport(0, 0, w, h);
+}
 
 void MyPanelOpenGL::paintGL() {
   /* clear both color and depth buffer */

@@ -19,7 +19,8 @@ class QTViewer{
        TODO: h/w not yet implemented
        title: Optional title of GUI applicaiton
     */
-    QTViewer(int argc, char* argv[], int w, int h, QString title="Demo");
+    QTViewer(int argc, char* argv[],
+        int w=400, int h=400, QString title="Demo");
     ~QTViewer();
 
     /* Connect a user specified visualization to viewer

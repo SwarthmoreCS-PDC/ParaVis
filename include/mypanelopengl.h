@@ -27,15 +27,16 @@ class MyPanelOpenGL : public QOpenGLWidget {
 
 protected:
   void initializeGL();
-  void resizeGL(int w, int h);
   void paintGL();
   void keyPressEvent(QKeyEvent *event);
+  void resizeGL(int w, int h);
 
 public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
   void setAnimation(DataVis* vis);
   void setMaxSteps(int steps);
+
 
 private:
 

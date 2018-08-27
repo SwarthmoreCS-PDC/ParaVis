@@ -26,6 +26,7 @@ QTViewer::QTViewer(int argc, char* argv[], int w, int h, QString title): m_argc(
   m_window = new MainWindow();
   m_window->setWindowTitle(title);
   m_window->show();
+  m_window->resize(w,h);
 }
 
 QTViewer::~QTViewer(){
@@ -36,10 +37,10 @@ QTViewer::~QTViewer(){
 void QTViewer::setAnimation(DataVis* vis){
   /* Pass info onto window, who will pass it on to
      the opengl panel */
-  m_window->setAnimation(vis);
+  m_window->getGLWidget()->setAnimation(vis);
 }
 
 int QTViewer::run(int maxSteps){
-  m_window->setMaxSteps(maxSteps);
+  m_window->getGLWidget()->setMaxSteps(maxSteps);
   return m_app->exec();
 }
