@@ -9,7 +9,7 @@ out vec3 fragColor;
 
 void main() {
   fragColor = texture(Tex0, texCoord).rgb;
-  //fragColor.a = 1;
+  // fragColor.a = 1;
   // fragColor = vec4(texCoord.x,texCoord.y,0,1.);
-  //fragColor = color.rgb;
+  // fragColor = color.rgb;
 }

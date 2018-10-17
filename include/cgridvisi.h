@@ -34,9 +34,8 @@
  *     buff: the image buffer to update
  *     app_data: a struct to any application_specific data needed
  */
-typedef void (* c_update_t)(color3 *buff, void* app_data);
+typedef void (*c_update_t)(color3 *buff, void *app_data);
 
-void init_and_run_animation(int rows, int cols,
-        void* data, c_update_t update_func,
-        char *name, int iters);
+void init_and_run_animation(int rows, int cols, void *data,
+                            c_update_t update_func, char *name, int iters);
 #endif

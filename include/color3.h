@@ -16,8 +16,8 @@
      add helper functions?
 */
 
-typedef struct{
-   unsigned char r;
-   unsigned char g;
-   unsigned char b;
+typedef struct {
+  unsigned char r;
+  unsigned char g;
+  unsigned char b;
 } color3;

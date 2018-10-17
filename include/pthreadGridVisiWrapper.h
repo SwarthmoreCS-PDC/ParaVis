@@ -2,8 +2,8 @@
 #pragma once
 
 #include "dataVisCPU.h"
-#include <pthread.h>
 #include "qtSafeViewer.h"
+#include <pthread.h>
 
 #ifdef __APPLE__
 #include <osx/pthread_barrier.h>

@@ -7,9 +7,10 @@ class Sphere {
   typedef QVector2D vec2;
   typedef QVector3D vec3;
   typedef QVector4D vec4;
+
 public:
   /* construct a sphere centered at origin with given radius
-               * by dividing it into vertical slices and horizontal stacks */
+   * by dividing it into vertical slices and horizontal stacks */
   Sphere(float radius, int slices, int stacks);
 
   ~Sphere();

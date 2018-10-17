@@ -12,8 +12,8 @@ class Cylinder {
 
 public:
   /* construct a Cylinder centered at origin with given radius
-               * and height (along +y axis)
-               * by dividing it into vertical slices and horizontal stacks */
+   * and height (along +y axis)
+   * by dividing it into vertical slices and horizontal stacks */
   Cylinder(float radius, float height, int slices, int stacks);
 
   ~Cylinder();

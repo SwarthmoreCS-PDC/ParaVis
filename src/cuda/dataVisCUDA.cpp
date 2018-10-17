@@ -1,15 +1,11 @@
 #include "dataVisCUDA.h"
 
+DataVisCUDA::DataVisCUDA(int w, int h, int d)
+    : DataVis(w, h, d), m_pbo(nullptr), m_animate(nullptr){
+                                            /* do nothing */
+                                        };
 
-DataVisCUDA::DataVisCUDA(int w, int h, int d) :
-   DataVis(w,h,d),
-   m_pbo(nullptr), m_animate(nullptr) {
- /* do nothing */
-};
-
-DataVisCUDA::~DataVisCUDA(){
-    disconnect();
-}
+DataVisCUDA::~DataVisCUDA() { disconnect(); }
 
 void DataVisCUDA::init() {
   m_wrapper.init();
@@ -17,19 +13,20 @@ void DataVisCUDA::init() {
   m_ready = true;
 }
 
-void DataVisCUDA::update(){
-  if(!m_ready){ init(); }
-  color3* buff = m_wrapper.map();
-  m_image.buffer=buff;
-  if(m_animate){
+void DataVisCUDA::update() {
+  if (!m_ready) {
+    init();
+  }
+  color3 *buff = m_wrapper.map();
+  m_image.buffer = buff;
+  if (m_animate) {
     m_animate->update(&m_image);
   }
   m_wrapper.unmap();
 }
 
-
 void DataVisCUDA::connect() {
-  if(!m_pbo){
+  if (!m_pbo) {
     createPBO();
   }
   m_wrapper.connect(m_pbo->bufferId());
@@ -45,15 +42,16 @@ void DataVisCUDA::textureReload() {
   m_texture->bind();
   // Read Texture data from PBO
   m_pbo->bind();
-  m_texture->setData(QOpenGLTexture::RGB, QOpenGLTexture::UInt8, (const void *) nullptr, &m_options);
+  m_texture->setData(QOpenGLTexture::RGB, QOpenGLTexture::UInt8,
+                     (const void *)nullptr, &m_options);
   m_pbo->release();
 }
 
-void DataVisCUDA::createPBO(){
+void DataVisCUDA::createPBO() {
   destroyPBO(); // get rid of any old buffer
 
   // Create PBO
-  int numBytes = sizeof(GLubyte) * 3 * m_width* m_height;
+  int numBytes = sizeof(GLubyte) * 3 * m_width * m_height;
   m_pbo = new QOpenGLBuffer(
       QOpenGLBuffer::PixelUnpackBuffer); // Used for reading Texture data
   m_pbo->create();
@@ -65,7 +63,7 @@ void DataVisCUDA::createPBO(){
   createTexture();
 }
 
-void DataVisCUDA::destroyPBO(){
+void DataVisCUDA::destroyPBO() {
   if (m_pbo) {
     m_pbo->release();
     delete m_pbo;

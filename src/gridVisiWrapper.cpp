@@ -1,7 +1,7 @@
 #include "gridVisiWrapper.h"
+#include "dataVis.h"
 #include "dataVisCFunction.h"
 #include "qtViewer.h"
-#include "dataVis.h"
 
 /*
  * initialize and run the 2D grid animation
@@ -13,31 +13,29 @@
  *   iters: if non-zero, run animation for iters steps (otherwise runs
  *          until explicitly exits)
  */
-extern "C" void init_and_run_animation(int rows, int cols,
-        void* data, c_update_t update_func,
-        char *name, int iters)
-{
-     GridVisiWrapper wrapper(rows,cols,data,update_func,name);
-     wrapper.run(iters);
+extern "C" void init_and_run_animation(int rows, int cols, void *data,
+                                       c_update_t update_func, char *name,
+                                       int iters) {
+  GridVisiWrapper wrapper(rows, cols, data, update_func, name);
+  wrapper.run(iters);
 }
 
-GridVisiWrapper::GridVisiWrapper(int rows, int cols,
-        void* data, c_update_t update_func,
-        char *name){
-    viewer=new QTSafeViewer(600,500,name);
-    visi_grid=new DataVisCFunction(rows, cols, data, update_func);
-    viewer->setAnimation(visi_grid);
+GridVisiWrapper::GridVisiWrapper(int rows, int cols, void *data,
+                                 c_update_t update_func, char *name) {
+  viewer = new QTSafeViewer(600, 500, name);
+  visi_grid = new DataVisCFunction(rows, cols, data, update_func);
+  viewer->setAnimation(visi_grid);
 }
 
-GridVisiWrapper::~GridVisiWrapper(){
-  delete viewer; viewer=nullptr;
+GridVisiWrapper::~GridVisiWrapper() {
+  delete viewer;
+  viewer = nullptr;
 }
 
-int GridVisiWrapper::run(int iters){
-  if(iters > 0){
+int GridVisiWrapper::run(int iters) {
+  if (iters > 0) {
     return viewer->run(iters);
-  }
-  else{
+  } else {
     return viewer->run();
   }
 }

@@ -6,8 +6,8 @@
 CUDAWrapper::CUDAWrapper() : m_pbo_CUDA(nullptr){};
 
 void CUDAWrapper::init() {
-   /* deprecated as of CUDA 5.0 */
-   //cudaGLSetGLDevice(0);
+  /* deprecated as of CUDA 5.0 */
+  // cudaGLSetGLDevice(0);
 }
 
 void CUDAWrapper::connect(GLuint buffID) {
@@ -21,11 +21,11 @@ void CUDAWrapper::connect(GLuint buffID) {
 void CUDAWrapper::disconnect() {
   if (m_pbo_CUDA) {
     cudaGraphicsUnregisterResource(m_pbo_CUDA);
-    m_pbo_CUDA=nullptr;
+    m_pbo_CUDA = nullptr;
   }
 }
 
-color3* CUDAWrapper::map(){
+color3 *CUDAWrapper::map() {
 
   color3 *dev_pixBuffer;
   size_t numBytes;
@@ -37,7 +37,7 @@ color3* CUDAWrapper::map(){
   return dev_pixBuffer;
 }
 
-void CUDAWrapper::unmap(){
+void CUDAWrapper::unmap() {
   cudaThreadSynchronize(); // Make sure kernel is done
   // Return PBO to OpenGL control.
   cudaGraphicsUnmapResources(1, &m_pbo_CUDA);

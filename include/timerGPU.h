@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <cuda.h>
 #include "timerBase.h"
+#include <cuda.h>
 
 /* Time events on GPU side
    See timerBase for method description

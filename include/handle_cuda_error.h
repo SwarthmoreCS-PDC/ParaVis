@@ -14,8 +14,8 @@
  * your use of this NVIDIA software.
  *
  */
-#include <cuda.h>
 #include <cstdio>
+#include <cuda.h>
 
 /* Check if return status (err) is not cudaSuccess. If a
  * real error occurred, print error string and exit program
@@ -41,11 +41,11 @@ void HandleError(cudaError_t err, const char *file, int line);
   }
 
 /* check error code and print message if not success */
-#define HANDLE_ERROR_MSG(a, msg)                                      \
-  {                                                                   \
-    cudaError_t ret;                                                  \
-    if ((ret=(a)) != cudaSuccess) {                                   \
-      printf(msg);                                                    \
-      printf("error %d\n", ret);                                      \
-    }                                                                 \
+#define HANDLE_ERROR_MSG(a, msg)                                               \
+  {                                                                            \
+    cudaError_t ret;                                                           \
+    if ((ret = (a)) != cudaSuccess) {                                          \
+      printf(msg);                                                             \
+      printf("error %d\n", ret);                                               \
+    }                                                                          \
   }

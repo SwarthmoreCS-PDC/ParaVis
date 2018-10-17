@@ -8,13 +8,13 @@
    need to modify/understand this class
 */
 
+#include "dataVis.h"
 #include "sphere.h"
 #include "square.h"
-#include "dataVis.h"
 #include <QKeyEvent>
 #include <QMatrix4x4>
-#include <QtOpenGL>
 #include <QTimer>
+#include <QtOpenGL>
 
 typedef QVector4D point4;
 typedef QVector4D color4;
@@ -34,12 +34,10 @@ protected:
 public:
   explicit MyPanelOpenGL(QWidget *parent = 0);
   virtual ~MyPanelOpenGL();
-  void setAnimation(DataVis* vis);
+  void setAnimation(DataVis *vis);
   void setMaxSteps(int steps);
 
-
 private:
-
   /* simple test shapes */
   Sphere *m_sphere;
   Square *m_square;
@@ -59,7 +57,7 @@ private:
   int m_tex_map;
 
   /* timer that periodically signals to control animation */
-  QTimer* m_timer;
+  QTimer *m_timer;
 
   /* maximum number of steps of animation to perform */
   int m_maxSteps;
@@ -67,7 +65,7 @@ private:
   int m_numSteps;
 
   /* User provided animation texture */
-  DataVis* m_vis;
+  DataVis *m_vis;
 
   vec3 m_angles; /* Euler angles for rotation */
 
@@ -110,6 +108,4 @@ public slots:
   void step();
 
 signals:
-
-
 };

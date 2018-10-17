@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dataVis.h"
-#include "cudaWrapper.h"
 #include "animator.h"
+#include "cudaWrapper.h"
+#include "dataVis.h"
 #include <QOpenGLBuffer>
 
 /* TODO: clean up the implementation of this perhaps?
@@ -26,25 +26,23 @@
    in this class class to connect their Animator to the
    DataVisCUDA class
 */
-class DataVisCUDA: public DataVis {
+class DataVisCUDA : public DataVis {
 
 public:
   // Depth d currently not used
-  DataVisCUDA(int w, int h, int d=1);
+  DataVisCUDA(int w, int h, int d = 1);
   virtual ~DataVisCUDA();
 
   virtual void update();
 
   void textureReload();
 
-  inline void setAnimator( Animator* animate){
-    m_animate = animate;
-  }
+  inline void setAnimator(Animator *animate) { m_animate = animate; }
 
 private:
-  QOpenGLBuffer *m_pbo;   /* Pixel Buffer Object */
-  CUDAWrapper m_wrapper;  /* Hides CUDA code from Qt */
-  Animator* m_animate;    /* User provided animation routine */
+  QOpenGLBuffer *m_pbo;  /* Pixel Buffer Object */
+  CUDAWrapper m_wrapper; /* Hides CUDA code from Qt */
+  Animator *m_animate;   /* User provided animation routine */
 
   /* Allocate GPU Pixel Buffer Object for Image Buffer memory */
   void createPBO();
@@ -61,5 +59,4 @@ private:
 
   /* Release CUDA resource connected to Pixel Buffer*/
   void disconnect();
-
 };

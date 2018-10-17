@@ -6,8 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 }
 
-MainWindow::~MainWindow() { delete ui; ui=nullptr; }
-
-MyPanelOpenGL* const MainWindow::getGLWidget(){
-  return ui->panelGL;
+MainWindow::~MainWindow() {
+  delete ui;
+  ui = nullptr;
 }
+
+MyPanelOpenGL *const MainWindow::getGLWidget() { return ui->panelGL; }

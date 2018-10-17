@@ -12,7 +12,6 @@ MyPanelOpenGL::MyPanelOpenGL(QWidget *parent)
     m_shaderPrograms[i] = nullptr;
     m_vertexShaders[i] = nullptr;
     m_fragmentShaders[i] = nullptr;
-
   }
 
   m_maxSteps = -1;
@@ -44,14 +43,12 @@ MyPanelOpenGL::~MyPanelOpenGL() {
   destroyShaders(0);
 }
 
-void MyPanelOpenGL::setAnimation(DataVis* vis){
+void MyPanelOpenGL::setAnimation(DataVis *vis) {
   m_vis = vis;
   textureReload();
 }
 
-void MyPanelOpenGL::setMaxSteps(int steps){
-  m_maxSteps = steps;
-}
+void MyPanelOpenGL::setMaxSteps(int steps) { m_maxSteps = steps; }
 
 void MyPanelOpenGL::initializeGL() {
   glEnable(GL_DEPTH_TEST);
@@ -79,16 +76,14 @@ void MyPanelOpenGL::initializeGL() {
   m_timer->start(10);
 }
 
-void MyPanelOpenGL::step(){
-  if(!m_paused){
+void MyPanelOpenGL::step() {
+  if (!m_paused) {
     textureReload();
     update();
   }
 }
 
-void MyPanelOpenGL::resizeGL(int w, int h) {
-  glViewport(0, 0, w, h);
-}
+void MyPanelOpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
 
 void MyPanelOpenGL::paintGL() {
   /* clear both color and depth buffer */
@@ -124,26 +119,23 @@ void MyPanelOpenGL::paintGL() {
 
 void MyPanelOpenGL::keyPressEvent(QKeyEvent *event) {
   /*Enable strong Focus on GL Widget to process key events*/
-  if( (event->modifiers() & Qt::ControlModifier) &&
-       event->key() == Qt::Key_S){
+  if ((event->modifiers() & Qt::ControlModifier) && event->key() == Qt::Key_S) {
     grabFramebuffer().save("snappy.png");
-  }
-  else{
-  switch (event->key()) {
-  case Qt::Key_Space:
-     m_paused=!m_paused;
-     break;
-  case Qt::Key_Escape:
-     QApplication::quit();
-     break;
-  case Qt::Key_T:
-    m_tex_map = (m_tex_map + 1) % 2;
-    setTexture();
-    break;
-  default:
-    QWidget::keyPressEvent(event); /* pass to base class */
-
-  }
+  } else {
+    switch (event->key()) {
+    case Qt::Key_Space:
+      m_paused = !m_paused;
+      break;
+    case Qt::Key_Escape:
+      QApplication::quit();
+      break;
+    case Qt::Key_T:
+      m_tex_map = (m_tex_map + 1) % 2;
+      setTexture();
+      break;
+    default:
+      QWidget::keyPressEvent(event); /* pass to base class */
+    }
   }
   update();
 }
@@ -172,19 +164,18 @@ void MyPanelOpenGL::updatePolyMode(int val) {
   }
 }
 
-void MyPanelOpenGL::setCulling(bool cull){
+void MyPanelOpenGL::setCulling(bool cull) {
   makeCurrent();
-  if (cull){
+  if (cull) {
     glEnable(GL_CULL_FACE);
-  }
-  else{
+  } else {
     glDisable(GL_CULL_FACE);
   }
 }
 
 void MyPanelOpenGL::createShaders(int i, QString vertName, QString fragName) {
 
-  //cout << "building shader " << i << endl;
+  // cout << "building shader " << i << endl;
   destroyShaders(i); // get rid of any old shaders
   m_vertexShaders[i] = new QOpenGLShader(QOpenGLShader::Vertex);
   if (!m_vertexShaders[i]->compileSourceFile(vertName)) {
@@ -219,10 +210,10 @@ void MyPanelOpenGL::destroyShaders(int i) {
 }
 
 void MyPanelOpenGL::textureReload() {
-  if(m_vis && (m_maxSteps<0 || m_numSteps<m_maxSteps)){
+  if (m_vis && (m_maxSteps < 0 || m_numSteps < m_maxSteps)) {
     m_vis->textureReload();
     m_numSteps++;
-    if(m_maxSteps==m_numSteps){
+    if (m_maxSteps == m_numSteps) {
       cout << "Maximum number of steps reached" << endl;
     }
   }

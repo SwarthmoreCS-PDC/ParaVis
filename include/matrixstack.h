@@ -3,7 +3,6 @@
 #include <QMatrix4x4>
 #include <QVector3D>
 
-
 class MatrixStack {
 public:
   /* construct a stack containing identity matrix */

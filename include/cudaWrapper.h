@@ -1,8 +1,8 @@
 #pragma once
 
+#include "color3.h"
 #include <GL/gl.h>
 #include <cuda.h>
-#include "color3.h"
 
 /* TODO: Check if this can be simplified
   https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__INTEROP.html#group__CUDART__INTEROP
@@ -27,7 +27,7 @@ public:
   void disconnect();
 
   /* Get a GPU pointer to mapped GPU memory */
-  color3* map();
+  color3 *map();
 
   /* Release GPU memory from being used in a CUDA context */
   void unmap();

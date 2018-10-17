@@ -4,7 +4,6 @@
 #include <QtOpenGL>
 #include <cmath>
 
-
 class Square {
   typedef QVector2D vec2;
   typedef QVector3D vec3;
@@ -12,7 +11,7 @@ class Square {
 
 public:
   /* construct a square with given width
-               * centered at origin, in z=0 plane*/
+   * centered at origin, in z=0 plane*/
   Square(float width);
 
   ~Square();

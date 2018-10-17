@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QMainWindow>
-#include "mypanelopengl.h"
 #include "dataVis.h"
+#include "mypanelopengl.h"
+#include <QMainWindow>
 
 namespace Ui {
 class MainWindow;
@@ -21,8 +21,7 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  MyPanelOpenGL* const getGLWidget();
-
+  MyPanelOpenGL *const getGLWidget();
 
 private:
   Ui::MainWindow *ui; /* auto-generated ui from mainwindow.ui */

@@ -1,9 +1,8 @@
 #pragma once
 
-
 #include "imageBuffer.h"
-#include <QOpenGLTexture>
 #include <QOpenGLPixelTransferOptions>
+#include <QOpenGLTexture>
 
 /* The DataVis class is the primary connection between
    the animation library and user provided code that
@@ -22,13 +21,12 @@
   image buffer.
   */
 
-
 class DataVis {
 
 public:
   /* Construct a new visualization with the dimensions given */
   // Depth d currently not used
-  DataVis(int w, int h, int d=1);
+  DataVis(int w, int h, int d = 1);
   virtual ~DataVis();
 
   /* Updates the colors in the ImageBuffer. Typically
@@ -66,5 +64,4 @@ protected:
 
   /* A helper method to setup the m_texture object */
   void createTexture();
-
 };

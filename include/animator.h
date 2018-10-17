@@ -12,7 +12,7 @@
    set Animator class and then provide the DataVisCUDA
    pointer to a qtViewer object for animating
 */
-class Animator{
+class Animator {
 public:
   Animator(){};
   virtual ~Animator(){/*do nothing*/};
@@ -23,5 +23,5 @@ public:
      GPU allocated buffer set by the DataVisCUDA
      class
   */
-  virtual void update(ImageBuffer* img) = 0;
+  virtual void update(ImageBuffer *img) = 0;
 };
