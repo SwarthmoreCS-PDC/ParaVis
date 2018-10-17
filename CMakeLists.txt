@@ -113,6 +113,8 @@ endif()
 find_package(Threads)
 if(CMAKE_USE_PTHREADS_INIT)
   target_link_libraries(qtvis PUBLIC Threads::Threads)
+  #C-wrapper library 
+  add_subdirectory(src/pthreads)
   if(APPLE)
     #compile separate libary for pthread_barrier on osx
     add_subdirectory(src/osx)
