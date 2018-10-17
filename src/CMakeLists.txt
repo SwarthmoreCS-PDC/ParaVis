@@ -5,11 +5,12 @@ target_sources(qtvis
     ${CMAKE_CURRENT_LIST_DIR}/dataVis.cpp
     ${CMAKE_CURRENT_LIST_DIR}/dataVisCPU.cpp
     ${CMAKE_CURRENT_LIST_DIR}/dataVisCFunction.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/gridVisiWrapper.cpp    
+    ${CMAKE_CURRENT_LIST_DIR}/gridVisiWrapper.cpp
     ${CMAKE_CURRENT_LIST_DIR}/sphere.cpp
     ${CMAKE_CURRENT_LIST_DIR}/square.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cylinder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/matrixstack.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/qtSafeViewer.cpp
 )
 
 #Core Qt window stuff, some requring AutoMOC AutoUI

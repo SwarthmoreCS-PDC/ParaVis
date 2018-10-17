@@ -1,9 +1,9 @@
 #pragma once
 
 extern "C"{
-  #include "cgridvisi.h"
+  #include <cgridvisi.h>
 }
-#include <qtViewer.h>
+#include <qtSafeViewer.h>
 #include <dataVis.h>
 
 class GridVisiWrapper{
@@ -15,8 +15,6 @@ public:
    int run(int iters=-1);
 
 private:
-  QTViewer *viewer;
+  QTSafeViewer *viewer;
   DataVis  *visi_grid;
-  int argc;
-  char* argv[1];
 };

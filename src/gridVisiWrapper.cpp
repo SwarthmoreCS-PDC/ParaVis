@@ -1,7 +1,7 @@
 #include "gridVisiWrapper.h"
 #include "dataVisCFunction.h"
-#include <qtViewer.h>
-#include <dataVis.h>
+#include "qtViewer.h"
+#include "dataVis.h"
 
 /*
  * initialize and run the 2D grid animation
@@ -24,19 +24,13 @@ extern "C" void init_and_run_animation(int rows, int cols,
 GridVisiWrapper::GridVisiWrapper(int rows, int cols,
         void* data, c_update_t update_func,
         char *name){
-    argc=1;
-    argv[0] = new char[5];
-    argv[0][0]='h';
-    argv[0][1]='i';
-    argv[0][2]='\0';
-    viewer=new QTViewer(argc,argv,600,500,name);
+    viewer=new QTSafeViewer(600,500,name);
     visi_grid=new DataVisCFunction(rows, cols, data, update_func);
     viewer->setAnimation(visi_grid);
 }
 
 GridVisiWrapper::~GridVisiWrapper(){
   delete viewer; viewer=nullptr;
-  delete [] argv[0]; argv[0]=nullptr;
 }
 
 int GridVisiWrapper::run(int iters){
