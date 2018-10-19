@@ -1,4 +1,4 @@
-#include "pthreadGridVisiWrapper.h"
+#include "dataVisPThreads.h"
 #include "cvisi_struct.h"
 #include "gridVisiWrapper.h"
 #include <cstdio>   //for perror
@@ -18,13 +18,13 @@ extern "C" visi_handle init_pthread_animation(int num_tids, int rows, int cols,
                                               char *name, int iters) {
 
   visi_handle handle = nullptr; // pointer to pthread_visi_struct
-  PthreadGridVisiWrapper *anim = nullptr;
+  DataVisPThreads *anim = nullptr;
   GridVisiWrapper *app = nullptr;
 
   try {
     handle = new visi_struct;
     app = new GridVisiWrapper(name);
-    anim = new PthreadGridVisiWrapper(num_tids, rows, cols);
+    anim = new DataVisPThreads(num_tids, rows, cols);
   } catch (std::bad_alloc &ba) {
     std::cerr << "bad_alloc caught: " << ba.what() << '\n';
     return nullptr;
@@ -34,7 +34,7 @@ extern "C" visi_handle init_pthread_animation(int num_tids, int rows, int cols,
   return handle;
 }
 
-PthreadGridVisiWrapper::PthreadGridVisiWrapper(int ntids, int r, int c)
+DataVisPThreads::DataVisPThreads(int ntids, int r, int c)
     : DataVisCPU(c, r), m_numThreads(ntids) {
   /*  init barrier to ntids+1: ntids application threads + the
       thread running opengl event loop and calling the update function
@@ -45,9 +45,9 @@ PthreadGridVisiWrapper::PthreadGridVisiWrapper(int ntids, int r, int c)
   }
 }
 
-PthreadGridVisiWrapper::~PthreadGridVisiWrapper() {
+DataVisPThreads::~DataVisPThreads() {
   pthread_barrier_wait(&m_barrier);
   pthread_barrier_destroy(&m_barrier);
 }
 
-void PthreadGridVisiWrapper::update() { pthread_barrier_wait(&m_barrier); }
+void DataVisPThreads::update() { pthread_barrier_wait(&m_barrier); }

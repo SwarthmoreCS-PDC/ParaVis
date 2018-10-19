@@ -13,11 +13,11 @@ extern "C" {
 #include "pthreadGridVisi.h"
 }
 
-class PthreadGridVisiWrapper : public DataVisCPU {
+class DataVisPThreads : public DataVisCPU {
 
 public:
-  PthreadGridVisiWrapper(int num_tids, int r, int c);
-  virtual ~PthreadGridVisiWrapper();
+  DataVisPThreads(int num_tids, int r, int c);
+  virtual ~DataVisPThreads();
 
   void update();
 
