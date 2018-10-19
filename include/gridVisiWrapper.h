@@ -1,19 +1,18 @@
 #pragma once
 
-extern "C" {
-#include <cgridvisi.h>
-}
 #include <dataVis.h>
 #include <qtSafeViewer.h>
 
+/* A small wrapper class that allows C programs to connect
+   to C++ interface */
 class GridVisiWrapper {
 public:
-  GridVisiWrapper(int rows, int cols, void *data, c_update_t update_func,
-                  char *name);
+  GridVisiWrapper(char *name);
   ~GridVisiWrapper();
   int run(int iters = -1);
+  void setAnimation(DataVis *anim);
 
 private:
-  QTSafeViewer *viewer;
-  DataVis *visi_grid;
+  QTSafeViewer *m_viewer;
+  DataVis *m_visi_grid;
 };

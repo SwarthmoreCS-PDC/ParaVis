@@ -1,14 +1,13 @@
 #ifndef _pthreadgridVisi_h_
 #define _pthreadgridVisi_h_
 
-#include "cgridvisi.h" // definition of c_update_t function pointer type
 #include "color3.h"
 
 #ifdef __APPLE__
 #include <osx/pthread_barrier.h>
 #endif
 
-/* exported typedef for internal state passed between libray functionns */
+/* exported typedef for internal state passed between library functions */
 struct visi_pthread_struct;
 typedef struct visi_pthread_struct *visi_pthread_handle;
 

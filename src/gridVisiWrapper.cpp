@@ -1,41 +1,27 @@
+
 #include "gridVisiWrapper.h"
-#include "dataVis.h"
-#include "dataVisCFunction.h"
-#include "qtViewer.h"
 
-/*
- * initialize and run the 2D grid animation
- *   rows: the number of rows in the grid
- *   cols: the number of columns in the grid
- *   data: a pointer to application-specific data (type defined by programer)
- *   name: a name string for the visi
- *   update_func: name of your update function (matching c_update_t prototype)
- *   iters: if non-zero, run animation for iters steps (otherwise runs
- *          until explicitly exits)
- */
-extern "C" void init_and_run_animation(int rows, int cols, void *data,
-                                       c_update_t update_func, char *name,
-                                       int iters) {
-  GridVisiWrapper wrapper(rows, cols, data, update_func, name);
-  wrapper.run(iters);
-}
-
-GridVisiWrapper::GridVisiWrapper(int rows, int cols, void *data,
-                                 c_update_t update_func, char *name) {
-  viewer = new QTSafeViewer(600, 500, name);
-  visi_grid = new DataVisCFunction(rows, cols, data, update_func);
-  viewer->setAnimation(visi_grid);
+GridVisiWrapper::GridVisiWrapper(char *name)
+    : m_viewer(nullptr), m_visi_grid(nullptr) {
+  m_viewer = new QTSafeViewer(600, 500, name);
 }
 
 GridVisiWrapper::~GridVisiWrapper() {
-  delete viewer;
-  viewer = nullptr;
+  delete m_viewer;
+  m_viewer = nullptr;
+  /* Viewer semantics is that it will destroy m_visi_grid for us */
+  m_visi_grid = nullptr;
+}
+
+void GridVisiWrapper::setAnimation(DataVis *anim) {
+  m_visi_grid = anim;
+  m_viewer->setAnimation(m_visi_grid);
 }
 
 int GridVisiWrapper::run(int iters) {
   if (iters > 0) {
-    return viewer->run(iters);
+    return m_viewer->run(iters);
   } else {
-    return viewer->run();
+    return m_viewer->run();
   }
 }
