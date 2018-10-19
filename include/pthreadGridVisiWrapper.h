@@ -20,9 +20,8 @@ public:
   virtual ~PthreadGridVisiWrapper();
 
   void update();
-  color3 *get_buff();
 
 private:
-  int ntids;
-  pthread_barrier_t visi_barrier;
+  int m_numThreads;
+  pthread_barrier_t m_barrier;
 };

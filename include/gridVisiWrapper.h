@@ -11,6 +11,8 @@ public:
   ~GridVisiWrapper();
   int run(int iters = -1);
   void setAnimation(DataVis *anim);
+  void update();
+  color3 *getBuffer();
 
 private:
   QTSafeViewer *m_viewer;

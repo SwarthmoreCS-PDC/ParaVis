@@ -13,12 +13,19 @@ GridVisiWrapper::~GridVisiWrapper() {
   m_visi_grid = nullptr;
 }
 
-void GridVisiWrapper::setAnimation(DataVis *anim) {
-  m_visi_grid = anim;
-  m_viewer->setAnimation(m_visi_grid);
+void GridVisiWrapper::setAnimation(DataVis *anim) { m_visi_grid = anim; }
+
+void GridVisiWrapper::update() { m_visi_grid->update(); }
+
+color3 *GridVisiWrapper::getBuffer() {
+  if (!m_visi_grid) {
+    return nullptr;
+  }
+  return m_visi_grid->getImageData().buffer;
 }
 
 int GridVisiWrapper::run(int iters) {
+  m_viewer->setAnimation(m_visi_grid);
   if (iters > 0) {
     return m_viewer->run(iters);
   } else {

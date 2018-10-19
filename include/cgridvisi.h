@@ -37,7 +37,7 @@
 typedef void (*c_update_t)(color3 *buff, void *app_data);
 
 /*  A C wrapper around the C++ library that runs the animation.
-    (implementation in gridVisiWrapper.cpp)
+    (implementation in cgridvisi.cpp)
 
     rows, cols: dimensions of color buffer
     app_data: a struct to any application specific data
@@ -50,4 +50,33 @@ typedef void (*c_update_t)(color3 *buff, void *app_data);
 */
 void init_and_run_animation(int rows, int cols, void *app_data,
                             c_update_t update_func, char *name, int iters);
+
+/* exported typedef for internal state passed between library functions */
+struct visi_struct;
+typedef struct visi_struct *visi_handle;
+
+/*
+ *  get the color3 buffer associated with a visualization
+ *   handle:  a handle to a visualization
+ *   returns: pointer to color3 buffer for the visualization,
+ *   or NULL on error
+ */
+color3 *get_animation_buffer(visi_handle handle);
+
+/*  Directly call update outside of the main animation loop.
+ *  Usually used by multi-threaded application to indicate each thread
+ *  has processed its portion of the buffer.
+ */
+void draw_ready(visi_handle handle);
+
+/*
+ * runs the a previously initialized animation:
+ *   handle: value returned by call to init_*_animation that sets up
+ *           a particular type of animation
+ *   iters: run for specified number of iterations, or if 0 run forever
+ */
+void run_animation(visi_handle handle, int iters);
+
+/* TODO: Add free_handle() function to complement init? */
+
 #endif

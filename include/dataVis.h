@@ -47,6 +47,13 @@ public:
      active texture for rendering */
   inline void bind() { m_texture->bind(); }
 
+  /* return a shallow copy of the image buffer. Usually users
+     should just subclass DataVis and write their own update
+     method to update the image, but in some cases, for example, when
+     working with C-style functions, it may be necessary to have
+     direct access to the image buffer */
+  inline ImageBuffer getImageData() { return m_image; }
+
 protected:
   /* Dimensions of the Image Buffer */
   int m_width, m_height, m_depth;
