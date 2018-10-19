@@ -5,7 +5,6 @@
 #include "gridVisiWrapper.h"
 
 struct visi_struct {
-  DataVis *visi_grid;
   GridVisiWrapper *app;
 };
 

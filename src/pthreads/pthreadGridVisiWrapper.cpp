@@ -25,16 +25,12 @@ extern "C" visi_handle init_pthread_animation(int num_tids, int rows, int cols,
     handle = new visi_struct;
     app = new GridVisiWrapper(name);
     anim = new PthreadGridVisiWrapper(num_tids, rows, cols);
-
-    //*TODO: fix possible race condition?
-    // handle->app->setAnimation(anim); //currently causes freezing
-    // */
   } catch (std::bad_alloc &ba) {
     std::cerr << "bad_alloc caught: " << ba.what() << '\n';
     return nullptr;
   }
   handle->app = app;
-  handle->visi_grid = anim;
+  handle->app->setAnimation(anim);
   return handle;
 }
 
@@ -49,7 +45,9 @@ PthreadGridVisiWrapper::PthreadGridVisiWrapper(int ntids, int r, int c)
   }
 }
 
-PthreadGridVisiWrapper::~PthreadGridVisiWrapper() { /* do nothing ? */
+PthreadGridVisiWrapper::~PthreadGridVisiWrapper() {
+  pthread_barrier_wait(&m_barrier);
+  pthread_barrier_destroy(&m_barrier);
 }
 
 void PthreadGridVisiWrapper::update() { pthread_barrier_wait(&m_barrier); }
