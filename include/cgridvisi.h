@@ -55,6 +55,16 @@ void init_and_run_animation(int rows, int cols, void *app_data,
 struct visi_struct;
 typedef struct visi_struct *visi_handle;
 
+/* initialize the visualization and return a new handle
+ *
+ *     rows: number of rows
+ *     cols: number of cols
+ *     name: name for visi window
+ *     iters: run for specified number of iterations, or if 0 run forever
+ *     returns: a visi_handle or NULL on error
+ */
+visi_handle init_c_animation(int rows, int cols, char *name, int iters);
+
 /*
  *  get the color3 buffer associated with a visualization
  *   handle:  a handle to a visualization

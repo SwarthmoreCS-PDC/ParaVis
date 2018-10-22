@@ -43,9 +43,9 @@
  *     cols: number of cols
  *     name: name for visi window
  *     iters: run for specified number of iterations, or if 0 run forever
- *     returns: a visi_pthread_handle or NULL on error
+ *     returns: a visi_handle or NULL on error
  */
-extern visi_handle init_pthread_animation(int num_tids, int rows, int cols,
+visi_handle init_pthread_animation(int num_tids, int rows, int cols,
                                           char *name, int iters);
 
 #endif
