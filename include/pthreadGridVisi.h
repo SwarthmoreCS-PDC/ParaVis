@@ -35,6 +35,10 @@
  *  (6) wait for worker threads to exit, then clean-up
  */
 
+/* exported typedef for internal state passed between library functions */
+struct visi_struct;
+typedef struct visi_struct *visi_handle;
+
 /* initialize the visualization:
  * this should only be called once (by one thread)
  *
@@ -45,7 +49,37 @@
  *     iters: run for specified number of iterations, or if 0 run forever
  *     returns: a visi_handle or NULL on error
  */
-visi_handle init_pthread_animation(int num_tids, int rows, int cols,
-                                          char *name, int iters);
+visi_handle init_pthread_animation(int num_tids, int rows, int cols, char *name,
+                                   int iters);
 
+/* None of this below is really pthreads specific, but since
+   it would be difficult to call draw_ready in an update loop
+   and separately call run_animation without having at least
+   two separate threads of execution, we keep these functions
+   here in pthreadGridVisi.h until another framework can also
+   use them. */
+
+/*
+ *  get the color3 buffer associated with a visualization
+ *   handle:  a handle to a visualization
+ *   returns: pointer to color3 buffer for the visualization,
+ *   or NULL on error
+ */
+color3 *get_animation_buffer(visi_handle handle);
+
+/*  Directly call update outside of the main animation loop.
+ *  Usually used by multi-threaded application to indicate each thread
+ *  has processed its portion of the buffer.
+ */
+void draw_ready(visi_handle handle);
+
+/*
+ * runs the a previously initialized animation:
+ *   handle: value returned by call to init_*_animation that sets up
+ *           a particular type of animation
+ *   iters: run for specified number of iterations, or if 0 run forever
+ */
+void run_animation(visi_handle handle, int iters);
+
+/* TODO: Add free_handle() function to complement init? */
 #endif
