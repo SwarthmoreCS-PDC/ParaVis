@@ -26,7 +26,7 @@ void DataVis::createTexture() {
   m_texture->setSize(m_width, m_height);
   m_texture->setFormat(QOpenGLTexture::RGB8_UNorm);
   m_texture->allocateStorage();
-  QOpenGLTexture::Filter filt = QOpenGLTexture::Linear;
+  QOpenGLTexture::Filter filt = QOpenGLTexture::Nearest;
   m_texture->setMinMagFilters(filt, filt);
   m_texture->setWrapMode(QOpenGLTexture::ClampToEdge);
 }
