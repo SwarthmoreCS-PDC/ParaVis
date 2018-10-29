@@ -14,7 +14,7 @@
  *  a struct type containing fields for application-specific state
  *  that will be passed to each thread via pthread_create.  One field
  *  in this struct should to be the (color3 *) buffer returned by
- *  get_buff_pthread_animation.  This is the buffer used by threads to
+ *  get_animation_buffer.  This is the buffer used by threads to
  *  update the visualization.
  *
  * The main program control flow should look like:
