@@ -60,7 +60,6 @@ void MyPanelOpenGL::initializeGL() {
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   createShaders(0, ":/shaders/vshader.glsl", ":/shaders/fshader.glsl");
 
-  /* TODO: don't hard code this or make it part of distribution */
   m_texture = new QOpenGLTexture(QImage(":/background.jpg").mirrored());
 
   m_sphere = new Sphere(0.5, 30, 30);
