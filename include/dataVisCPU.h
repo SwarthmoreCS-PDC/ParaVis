@@ -13,6 +13,11 @@ class DataVisCPU : public DataVis {
 public:
   // Depth d currently not used
   DataVisCPU(int w, int h, int d = 1);
+
+  /* Construct a new visualization using the provided image file
+     name for the initial dimensions and colors */
+  DataVisCPU(QString imgFileName);
+
   virtual ~DataVisCPU();
 
   void textureReload();

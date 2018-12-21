@@ -27,6 +27,11 @@ public:
   /* Construct a new visualization with the dimensions given */
   // Depth d currently not used
   DataVis(int w, int h, int d = 1);
+
+  /* Construct a new visualization using the provided image file
+     name for the initial dimensions and colors */
+  DataVis(QString imgFileName);
+
   virtual ~DataVis();
 
   /* Updates the colors in the ImageBuffer. Typically
@@ -57,8 +62,10 @@ public:
 protected:
   /* Dimensions of the Image Buffer */
   int m_width, m_height, m_depth;
+
   /* Set to true once the Image Buffer has been allocated */
   bool m_ready;
+
   /* The underlying OpenGL texture representation of the
      Image Buffer */
   QOpenGLTexture *m_texture;
@@ -69,6 +76,19 @@ protected:
      displayed on the screen */
   ImageBuffer m_image;
 
+  /* An optional image (e.g., png/jpeg file) that can be
+     the source of colors for the initial color buffer */
+  QImage* m_initial_image;
+
+  /* common constructor code */
+  void initCommon();
+
   /* A helper method to setup the m_texture object */
   void createTexture();
+
+  /* read pixels from initial image and write to supplied
+     color buffer. Assumes space is already allocated
+     on CPU for buff in row major order */
+  void loadPixels(color3* buff);
+
 };
