@@ -20,8 +20,8 @@ DataVis::DataVis(QString imgFileName): m_width(0), m_height(0), m_depth(1),
 }
 
 void DataVis::initCommon(){
-  m_image.height = m_width;
-  m_image.width = m_height;
+  m_image.height = m_height;
+  m_image.width = m_width;
   m_image.depth = m_depth;
   m_image.buffer = nullptr;
 
