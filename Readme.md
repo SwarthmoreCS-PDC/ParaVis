@@ -2,7 +2,7 @@
 
 ## A library for visualization of parallel programs
 
-This repo provides a library for visualizing and animating a two dimensional grid of colors through the [DataVis](include/dataVis.h) class. The primary purpose of this library is to provide an easy to use interface to explore parallel computing through data visualization. The `DataVis` class makes it easy to create small derived classes that use various parallel frameworks to update the color grid. The library uses Qt and OpenGL 4.x to animate and visualize the grid as the user updates it, but users do not need to be experts in either Qt or OpenGL to use this library. Currently, the following parallel frameworks are supported
+This repo provides a library for visualizing and animating a two dimensional grid of colors through the [DataVis](include/dataVis.h) class. The primary purpose of this library is to provide an easy to use interface to explore parallel computing through data visualization. The `DataVis` class makes it easy to create small derived classes that use various parallel frameworks to update the color grid. The library uses Qt and OpenGL 4.x to animate and visualize the grid as the user updates it, but users do not need to be experts in either Qt or OpenGL to use this library. Currently, the following parallel frameworks are supported:
 
  * [OpenMP](https://www.openmp.org/resources/tutorials-articles/)
  * [pthreads](https://computing.llnl.gov/tutorials/pthreads/)
