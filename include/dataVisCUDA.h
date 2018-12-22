@@ -31,6 +31,12 @@ class DataVisCUDA : public DataVis {
 public:
   // Depth d currently not used
   DataVisCUDA(int w, int h, int d = 1);
+
+  /* Construct a new visualization using the provided image file
+     name for the initial dimensions and colors. Copies
+     image data to GPU color buffer */
+  DataVisCUDA(QString imgFileName);
+
   virtual ~DataVisCUDA();
 
   virtual void update();
@@ -53,10 +59,4 @@ private:
   /* Delayed constructon of CUDA buffers once OpenGL/CUDA context
      is available */
   void init();
-
-  /* Connect Pixel Buffer Object to CUDA resource */
-  void connect();
-
-  /* Release CUDA resource connected to Pixel Buffer*/
-  void disconnect();
 };

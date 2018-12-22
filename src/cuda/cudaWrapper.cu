@@ -25,6 +25,14 @@ void CUDAWrapper::disconnect() {
   }
 }
 
+bool CUDAWrapper::copyToGPU(color3 *cpuBuff, int width, int height) {
+  color3 *dev_img = this->map();
+  cudaError_t err;
+  err = cudaMemcpy(dev_img, cpuBuff, sizeof(color3) * width * height,
+                   cudaMemcpyHostToDevice);
+  return (err == cudaSuccess);
+}
+
 color3 *CUDAWrapper::map() {
 
   color3 *dev_pixBuffer;

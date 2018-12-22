@@ -26,6 +26,12 @@ public:
   /* Release CUDA resource connected to Pixel Buffer*/
   void disconnect();
 
+  /* copy color buffer on CPU to color buffer on GPU.
+     Assumes GPU buffer is already allocated and available
+     through map(). Returns true if copy was successful,
+     false if error */
+  bool copyToGPU(color3 *cpuBuff, int width, int height);
+
   /* Get a GPU pointer to mapped GPU memory */
   color3 *map();
 

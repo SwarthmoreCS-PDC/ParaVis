@@ -1,15 +1,34 @@
 #include "dataVisCUDA.h"
+#include <cstdio>
 
 DataVisCUDA::DataVisCUDA(int w, int h, int d)
-    : DataVis(w, h, d), m_pbo(nullptr), m_animate(nullptr){
-                                            /* do nothing */
-                                        };
+    : DataVis(w, h, d), m_pbo(nullptr), m_animate(nullptr) {
+  /* do nothing */
+}
 
-DataVisCUDA::~DataVisCUDA() { disconnect(); }
+DataVisCUDA::DataVisCUDA(QString imgFileName)
+    : DataVis(imgFileName), m_pbo(nullptr), m_animate(nullptr) {
+  /* do nothing here. Defer copying image pixel until init()
+    when CUDA GPU buffer is available */
+}
+
+DataVisCUDA::~DataVisCUDA() {
+  m_wrapper.disconnect();
+  destroyPBO();
+}
 
 void DataVisCUDA::init() {
   m_wrapper.init();
   createPBO();
+  if (m_initial_image && (m_width > 0) && (m_height > 0)) {
+    color3 *cpuBuff = new color3[m_width * m_height];
+    loadPixels(cpuBuff);
+    if (!m_wrapper.copyToGPU(cpuBuff, m_width, m_height)) {
+      printf("Unable to copy image to GPU\n");
+    }
+    delete[] cpuBuff;
+    cpuBuff = nullptr;
+  }
   m_ready = true;
 }
 
@@ -23,18 +42,6 @@ void DataVisCUDA::update() {
     m_animate->update(&m_image);
   }
   m_wrapper.unmap();
-}
-
-void DataVisCUDA::connect() {
-  if (!m_pbo) {
-    createPBO();
-  }
-  m_wrapper.connect(m_pbo->bufferId());
-}
-
-void DataVisCUDA::disconnect() {
-  m_wrapper.disconnect();
-  destroyPBO();
 }
 
 void DataVisCUDA::textureReload() {
