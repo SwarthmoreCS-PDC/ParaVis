@@ -2,16 +2,11 @@
 #pragma once
 
 #include "dataVisCPU.h"
-#include "qtSafeViewer.h"
 #include <pthread.h>
 
 #ifdef __APPLE__
 #include <osx/pthread_barrier.h>
 #endif
-
-extern "C" {
-#include "pthreadGridVisi.h"
-}
 
 class DataVisPThreads : public DataVisCPU {
 
