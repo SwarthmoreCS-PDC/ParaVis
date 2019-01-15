@@ -2,6 +2,11 @@
 #define _pthreadgridVisi_h_
 
 #include "color3.h"
+#include <pthread.h>
+
+#ifdef __APPLE__
+#include "osx/pthread_barrier.h"
+#endif
 
 /*
  * To use this interface you need to first define:
