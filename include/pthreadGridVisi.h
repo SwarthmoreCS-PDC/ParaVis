@@ -41,11 +41,10 @@ typedef struct visi_struct *visi_handle;
  *     rows: number of rows
  *     cols: number of cols
  *     name: name for visi window
- *     iters: run for specified number of iterations, or if 0 run forever
  *     returns: a visi_handle or NULL on error
  */
-visi_handle init_pthread_animation(int num_tids, int rows, int cols, char *name,
-                                   int iters);
+visi_handle init_pthread_animation(int num_tids, int rows, int cols,
+   char *name);
 
 /* None of this below is really pthreads specific, but since
    it would be difficult to call draw_ready in an update loop

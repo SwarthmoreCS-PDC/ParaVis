@@ -1,5 +1,5 @@
-#include "gridVisiWrapper.h"
-#include "dataVisPThreads.h"
+#include <gridVisiWrapper.h>
+#include <dataVisPThreads.h>
 #include <cstdio>   //for perror
 #include <iostream> // for cerr
 #include <new>      //for bad_alloc
@@ -10,23 +10,22 @@
  *     rows: number of rows
  *     cols: number of cols
  *     name: name for visi window
- *     iters: run for specified number of iterations, or if 0 run forever
  *     returns: a pthread_visi_handle or NULL on error
  */
 extern "C" {
 
-#include "cvisi_struct.h"
-#include "pthreadGridVisi.h"
+#include <cvisi_struct.h>
+#include <pthreadGridVisi.h>
 
-visi_handle init_pthread_animation(int num_tids, int rows, int cols, char *name,
-                                   int iters) {
+visi_handle init_pthread_animation(int num_tids, int rows, int cols,
+   char *name) {
 
   visi_handle handle = nullptr; // pointer to pthread_visi_struct
   DataVisPThreads *anim = nullptr;
   GridVisiWrapper *app = nullptr;
 
   try {
-    handle = new visi_struct;
+    handle = new visi_struct();
     app = new GridVisiWrapper(name);
     anim = new DataVisPThreads(num_tids, rows, cols);
   } catch (std::bad_alloc &ba) {
