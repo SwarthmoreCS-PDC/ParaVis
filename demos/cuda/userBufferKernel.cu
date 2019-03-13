@@ -1,6 +1,11 @@
 #include "userBufferKernel.h"
 #include "handle_cuda_error.h"
-#include <unistd.h>
+
+#ifdef _WIN32
+#include <windows.h>  /* Sleep(milliSec)  */
+#else
+#include <unistd.h>   /* usleep(milliSec) */
+#endif
 
 __global__ void int_to_color(color3 *optr, const int *my_cuda_data, int ncols);
 __global__ void simplekernel(int *data, int ncols);
@@ -51,7 +56,13 @@ void UserBufferKernel::update(ImageBuffer* img){
                                           m_cols);
 
   // I needed to slow it down:
-  usleep(90000);
+  const int napms=90000;
+#ifdef _WIN32
+  Sleep(napms);
+#else
+  usleep(napms);
+#endif
+
 }
 
 // a kernel to set the color the opengGL display object based

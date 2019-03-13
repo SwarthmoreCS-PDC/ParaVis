@@ -26,10 +26,14 @@ target_compile_features(compile_info
 )
 set(cxx_lang "$<COMPILE_LANGUAGE:CXX>")
 set(debug_cxx_lang "$<AND:$<CONFIG:DEBUG>,${cxx_lang}>")
+
+if(NOT WIN32)
 target_compile_options(compile_info INTERFACE
   $<${cxx_lang}:$<BUILD_INTERFACE:-Wall>>
   $<${debug_cxx_lang}:$<BUILD_INTERFACE:-Wunused-parameter>>
 )
+endif()
+
 
 
 #The primary libary. Sources can be added incrementally
@@ -87,10 +91,12 @@ if(CMAKE_CUDA_COMPILER)
   include(${CMAKE_SOURCE_DIR}/cmake_modules/detectCUDAarch.cmake)
   set(cuda_lang "$<COMPILE_LANGUAGE:CUDA>")
   set(debug_cuda_lang "$<AND:$<CONFIG:DEBUG>,${cuda_lang}>")
+  if(NOT WIN32)
   target_compile_options(compile_info INTERFACE
     $<${cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wall>>
     $<${debug_cuda_lang}:$<BUILD_INTERFACE:-Xcompiler=-Wunused-parameter>>
   )
+endif()
   target_compile_options(compile_info INTERFACE
       $<${cuda_lang}:$<BUILD_INTERFACE:${QVis_CUDA_ARCH}>>
   )

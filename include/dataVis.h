@@ -1,6 +1,11 @@
 #pragma once
 
 #include "imageBuffer.h"
+
+#ifdef _WIN32
+#include<windows.h>
+#endif
+
 #include <QOpenGLPixelTransferOptions>
 #include <QOpenGLTexture>
 
