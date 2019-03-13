@@ -4,8 +4,6 @@
  */
 #pragma once
 
-#include <sys/time.h>
-
 class TimerBase {
 public:
   virtual ~TimerBase() { /*do nothing*/

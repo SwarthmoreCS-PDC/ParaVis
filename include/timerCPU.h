@@ -5,7 +5,7 @@
 #pragma once
 
 #include "timerBase.h"
-#include <sys/time.h>
+#include <QDateTime>
 
 /* Time events on CPU side
    See timerBase for method description
@@ -13,10 +13,7 @@
 class CPUTimer : public TimerBase {
 private:
   // store start/stop times
-  struct timeval startTime, stopTime, stopDiff, curDiff;
-  // subtract before time from after and store in result
-  void timeSub(struct timeval &result, struct timeval before,
-               struct timeval after);
+  QDateTime startTime, stopTime;
 
 public:
   CPUTimer();   // Create a timer
