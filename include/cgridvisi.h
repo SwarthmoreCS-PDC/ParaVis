@@ -3,6 +3,10 @@
 
 #include <color3.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * To use this interface you need to first define:
  *
@@ -50,5 +54,8 @@ typedef void (*c_update_t)(color3 *buff, void *app_data);
 */
 void init_and_run_animation(int rows, int cols, void *app_data,
                             c_update_t update_func, char *name, int iters);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

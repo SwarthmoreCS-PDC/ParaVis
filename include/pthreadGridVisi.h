@@ -8,6 +8,10 @@
 #include "osx/pthread_barrier.h"
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * To use this interface you need to first define:
  * ----------------------------------------------
@@ -79,6 +83,10 @@ void draw_ready(visi_handle handle);
  *   iters: run for specified number of iterations, or if 0 run forever
  */
 void run_animation(visi_handle handle, int iters);
+
+#ifdef __cplusplus
+}
+#endif
 
 /* TODO: Add free_handle() function to complement init? */
 #endif
