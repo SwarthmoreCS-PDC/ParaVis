@@ -46,7 +46,7 @@ color3 *CUDAWrapper::map() {
 }
 
 void CUDAWrapper::unmap() {
-  cudaThreadSynchronize(); // Make sure kernel is done
+  cudaDeviceSynchronize(); // Make sure kernel is done
   // Return PBO to OpenGL control.
   cudaGraphicsUnmapResources(1, &m_pbo_CUDA);
 }
