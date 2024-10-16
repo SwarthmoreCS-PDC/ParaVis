@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.11)
 #CXX used for most of project, C for OSX pthread extensions
 project(qtParallelVis VERSION 0.1 LANGUAGES CXX C )
 
+#CUDA CMAKE ARCHITECTURE POLICY CMAKE >= 3.18
+if(POLICY CMP0104)
+  cmake_policy(SET CMP0104 NEW)
+endif()
+
 #to switch betweeen release/debug builds
 #cmake -DCMAKE_BUILD_TYPE=<Release/Debug/RelWithDebInfo/MinSizeRel> ..
 
