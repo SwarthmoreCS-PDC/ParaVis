@@ -191,7 +191,7 @@ void MyPanelOpenGL::createShaders(int i, QString vertName, QString fragName) {
   m_shaderPrograms[i]->addShader(m_fragmentShaders[i]);
 
   if (!m_shaderPrograms[i]->link()) {
-    qWarning() << m_shaderPrograms[i]->log() << endl;
+    qWarning() << m_shaderPrograms[i]->log() << Qt::endl;
   }
 }
 
@@ -213,7 +213,7 @@ void MyPanelOpenGL::textureReload() {
     m_vis->textureReload();
     m_numSteps++;
     if (m_maxSteps == m_numSteps) {
-      cout << "Maximum number of steps reached" << endl;
+      cout << "Maximum number of steps reached" << std::endl;
     }
   }
 }
